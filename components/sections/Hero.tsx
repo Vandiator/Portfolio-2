@@ -1,31 +1,11 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useEffect } from "react";
+import { motion } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, Sparkles } from "lucide-react";
 import { profile } from "@/content/profile";
 import { Avatar } from "@/components/Avatar";
 
 export function Hero() {
-  // Cursor parallax for hero glyph
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 60, damping: 20 });
-  const sy = useSpring(my, { stiffness: 60, damping: 20 });
-  const tx = useTransform(sx, [-1, 1], [-30, 30]);
-  const ty = useTransform(sy, [-1, 1], [-30, 30]);
-
-  useEffect(() => {
-    const handle = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 2;
-      const y = (e.clientY / window.innerHeight - 0.5) * 2;
-      mx.set(x);
-      my.set(y);
-    };
-    window.addEventListener("mousemove", handle);
-    return () => window.removeEventListener("mousemove", handle);
-  }, [mx, my]);
-
   const heroDelay = 1.6; // wait for splash
   const w = (text: string, base = heroDelay) =>
     text.split(" ").map((word, i) => (
@@ -49,17 +29,6 @@ export function Hero() {
       id="top"
       className="relative flex min-h-[100svh] items-center overflow-hidden pt-28"
     >
-      {/* Background hero glyph */}
-      <motion.div
-        aria-hidden
-        style={{ x: tx, y: ty }}
-        className="pointer-events-none absolute inset-0 -z-10 grid place-items-center"
-      >
-        <span className="text-display select-none text-[40vw] font-normal italic leading-none text-fg/[0.035] md:text-[32vw]">
-          V
-        </span>
-      </motion.div>
-
       <div className="container-page relative">
         <div className="grid items-center gap-12 md:grid-cols-12">
           {/* LEFT — copy */}
