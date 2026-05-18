@@ -54,9 +54,10 @@ export function CustomCursor() {
 
   return (
     <>
+      {/* Dot follows raw cursor — no spring => zero lag */}
       <motion.div
         aria-hidden
-        style={{ translateX: springX, translateY: springY }}
+        style={{ translateX: cursorX, translateY: cursorY }}
         className="pointer-events-none fixed left-0 top-0 z-[100] -ml-[6px] -mt-[6px]"
       >
         <motion.div
