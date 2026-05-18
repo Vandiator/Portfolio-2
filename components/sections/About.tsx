@@ -23,6 +23,13 @@ const traits = [
   },
 ];
 
+const stats = [
+  { n: "200+", l: "Datasets cleaned & fed into ERP" },
+  { n: "30", l: "Days · Smart Campus boot camp" },
+  { n: "Top", l: "Smart India Hackathon — Semi Finalist" },
+  { n: "2", l: "Degrees in progress (B.Tech + IIT-M BS)" },
+];
+
 export function About() {
   return (
     <section id="about" className="section relative">
@@ -103,6 +110,37 @@ export function About() {
             </ul>
           </div>
         </div>
+
+        {/* Stats grid */}
+        <motion.ul
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-60px" }}
+          variants={{
+            hidden: {},
+            show: { transition: { staggerChildren: 0.08 } },
+          }}
+          className="mt-16 grid grid-cols-2 gap-3 md:grid-cols-4"
+        >
+          {stats.map((s, i) => (
+            <motion.li
+              key={i}
+              variants={{
+                hidden: { opacity: 0, y: 16 },
+                show: { opacity: 1, y: 0 },
+              }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="rounded-2xl border border-border/60 bg-bg-elevated/40 p-5 backdrop-blur"
+            >
+              <p className="text-display text-3xl font-normal italic md:text-4xl">
+                <span className="text-accent">{s.n}</span>
+              </p>
+              <p className="mt-2 text-xs uppercase tracking-widest text-fg-subtle">
+                {s.l}
+              </p>
+            </motion.li>
+          ))}
+        </motion.ul>
       </div>
     </section>
   );

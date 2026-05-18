@@ -4,6 +4,8 @@ import "./globals.css";
 import { profile } from "@/content/profile";
 import { CustomCursor } from "@/components/effects/CustomCursor";
 import { SmoothScroll } from "@/components/effects/SmoothScroll";
+import { AuroraBackground } from "@/components/effects/AuroraBackground";
+import { Splash } from "@/components/effects/Splash";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
@@ -36,6 +38,7 @@ export const metadata: Metadata = {
   description: profile.tagline,
   keywords: [
     "Vineet Vishwakarma",
+    "Vandiator",
     "Portfolio",
     "Machine Learning",
     "Frontend Developer",
@@ -56,10 +59,7 @@ export const metadata: Metadata = {
     title: `${profile.name} — ${profile.title}`,
     description: profile.tagline,
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
@@ -73,14 +73,24 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <head>
+        {/* Prevent dark/light flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}var r=document.documentElement;r.classList.remove('dark','light');r.classList.add(t);}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${instrument.variable} grain`}
+        className={`${geistSans.variable} ${geistMono.variable} ${instrument.variable} relative`}
       >
+        <AuroraBackground />
+        <Splash />
         <SmoothScroll />
         <CustomCursor />
         <Navbar />
-        <main>{children}</main>
+        <main className="relative z-10">{children}</main>
         <Footer />
       </body>
     </html>

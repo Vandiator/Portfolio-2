@@ -5,12 +5,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { profile } from "@/content/profile";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/effects/ThemeToggle";
 
 const links = [
   { href: "#about", label: "About" },
   { href: "#work", label: "Work" },
-  { href: "#experience", label: "Experience" },
   { href: "#skills", label: "Skills" },
+  { href: "#experience", label: "Experience" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -29,9 +30,9 @@ export function Navbar() {
     <motion.header
       initial={{ y: -32, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 1.4 }}
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
+        "fixed inset-x-0 top-0 z-40 transition-all duration-300",
         scrolled
           ? "border-b border-border/60 bg-bg/70 backdrop-blur-xl"
           : "border-b border-transparent"
@@ -46,8 +47,11 @@ export function Navbar() {
           <span className="grid h-8 w-8 place-items-center rounded-full bg-fg text-bg font-mono text-sm font-bold transition-transform group-hover:rotate-12">
             V
           </span>
-          <span className="hidden text-sm font-medium sm:inline">
-            {profile.shortName}
+          <span className="hidden flex-col leading-tight sm:flex">
+            <span className="text-sm font-medium">{profile.shortName}</span>
+            <span className="font-mono text-[10px] uppercase tracking-widest text-fg-subtle">
+              vandiator
+            </span>
           </span>
         </a>
 
@@ -66,7 +70,8 @@ export function Navbar() {
           </ul>
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-2 md:flex">
+          <ThemeToggle />
           <a
             href={profile.resumeUrl}
             target="_blank"
@@ -78,14 +83,17 @@ export function Navbar() {
           </a>
         </div>
 
-        <button
-          aria-label="Toggle menu"
-          aria-expanded={mobileOpen}
-          onClick={() => setMobileOpen((v) => !v)}
-          className="grid h-10 w-10 place-items-center rounded-full border border-border/60 md:hidden"
-        >
-          {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
+            onClick={() => setMobileOpen((v) => !v)}
+            className="grid h-10 w-10 place-items-center rounded-full border border-border/60"
+          >
+            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
