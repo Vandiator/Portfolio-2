@@ -16,6 +16,7 @@ export function AuroraBackground() {
       <div className="orb orb-3" />
       <div className="orb orb-4" />
       <div className="vignette" />
+      <div className="grain" />
     </div>
   );
 }
