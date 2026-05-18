@@ -5,6 +5,7 @@ import { profile } from "@/content/profile";
 import { CustomCursor } from "@/components/effects/CustomCursor";
 import { SmoothScroll } from "@/components/effects/SmoothScroll";
 import { AuroraBackground } from "@/components/effects/AuroraBackground";
+import { FilmGrain } from "@/components/effects/FilmGrain";
 import { Splash } from "@/components/effects/Splash";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -86,6 +87,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${instrument.variable} relative`}
       >
         <AuroraBackground />
+        <FilmGrain />
         <Splash />
         <SmoothScroll />
         <CustomCursor />
