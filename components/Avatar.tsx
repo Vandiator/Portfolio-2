@@ -2,6 +2,7 @@
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useEffect, useRef } from "react";
+import { Typewriter } from "@/components/effects/Typewriter";
 
 /**
  * Cinematic avatar frame (no real photo required for v1).
@@ -138,10 +139,19 @@ export function Avatar() {
         </div>
       </div>
 
-      {/* Caption */}
+      {/* Caption with typewriter role cycle */}
       <div className="absolute -bottom-8 left-0 right-0 text-center">
         <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-fg-subtle">
-          vandiator · ml &amp; web developer
+          <span>vandiator · </span>
+          <Typewriter
+            words={[
+              "ML & Software Developer",
+              "UI/UX Designer",
+              "Creative Technologist",
+              "Vandiator",
+            ]}
+            className="text-fg"
+          />
         </p>
       </div>
     </motion.div>
