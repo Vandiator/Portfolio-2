@@ -70,21 +70,6 @@ export function CustomCursor() {
           className="h-3 w-3 rounded-full"
         />
       </motion.div>
-      <motion.div
-        aria-hidden
-        style={{ translateX: cursorX, translateY: cursorY }}
-        className="pointer-events-none fixed left-0 top-0 z-[100] -ml-5 -mt-5"
-      >
-        <motion.div
-          animate={{
-            scale: hovering ? 1.5 : 1,
-            opacity: hovering ? 0.4 : 0.15,
-            borderColor: hovering ? "hsl(var(--accent))" : "hsl(var(--fg))",
-          }}
-          transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className="h-10 w-10 rounded-full border"
-        />
-      </motion.div>
       {text && (
         <motion.div
           aria-hidden
