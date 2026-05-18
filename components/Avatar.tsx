@@ -140,9 +140,10 @@ export function Avatar() {
       </div>
 
       {/* Caption with typewriter role cycle */}
-      <div className="absolute -bottom-8 left-0 right-0 text-center">
-        <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-fg-subtle">
-          <span>vandiator · </span>
+      <div className="absolute -bottom-12 left-1/2 w-[120%] -translate-x-1/2 px-2 text-center sm:-bottom-8 sm:w-full">
+        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-fg-subtle sm:tracking-[0.3em]">
+          <span className="text-fg-subtle">vandiator</span>
+          <span className="mx-1.5 text-accent">·</span>
           <Typewriter
             words={[
               "ML & Software Developer",

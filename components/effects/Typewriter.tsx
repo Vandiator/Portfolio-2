@@ -90,16 +90,19 @@ export function Typewriter({
   }, [words, typeMs, deleteMs, holdMs, gapMs]);
 
   return (
-    <span className={className} aria-live="polite">
-      <span>{text}</span>
+    <span
+      className={`inline-flex items-center align-middle ${className ?? ""}`}
+      aria-live="polite"
+    >
+      <span className="whitespace-nowrap">{text}</span>
       {!reduced && (
         <span
           aria-hidden
-          className={`ml-0.5 inline-block w-[1px] animate-pulse self-stretch ${caretClassName}`}
+          className={`ml-[2px] inline-block w-[2px] animate-caret ${caretClassName}`}
           style={{
-            verticalAlign: "-0.1em",
             height: "1em",
             background: "currentColor",
+            verticalAlign: "middle",
           }}
         />
       )}

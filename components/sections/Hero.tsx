@@ -145,7 +145,7 @@ export function Hero() {
               delay: heroDelay + 0.2,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className="md:col-span-5"
+            className="mb-12 md:col-span-5 md:mb-0"
           >
             <Avatar />
           </motion.div>
