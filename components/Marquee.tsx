@@ -2,26 +2,29 @@
 
 import { motion } from "framer-motion";
 
+/**
+ * Real verbs from real work, not abstract buzzwords. Each line is a
+ * concrete thing on Vineet's resume.
+ */
 const items = [
-  "MACHINE LEARNING",
-  "FRONTEND ENGINEERING",
-  "UI / UX SYSTEMS",
-  "ERP AUTOMATION",
-  "CINEMATIC INTERFACES",
-  "RASA & DIALOGFLOW",
-  "FIGMA → REACT",
-  "DATA PIPELINES",
+  "BUILT THE DEEPFAKE DETECTION FRONTEND",
+  "DESIGNED A CAMPUS RESOURCE PLATFORM IN FIGMA",
+  "AUTOMATED 200+ ERP DATASETS",
+  "SHIPPED CHATBOTS WITH RASA & DIALOGFLOW",
+  "REACHED THE SIH SEMI-FINALS",
+  "WROTE FRONTEND IN HTML / CSS / JS",
+  "TRAINED ML MODELS IN SCIKIT-LEARN",
 ];
 
 export function Marquee() {
   return (
-    <div className="relative overflow-hidden border-y border-border/60 bg-bg-subtle/60 py-6 backdrop-blur">
+    <div className="relative overflow-hidden border-y border-border/60 bg-bg-subtle/60 py-6">
       <motion.div
         className="flex gap-12 whitespace-nowrap font-mono text-sm uppercase tracking-[0.3em] text-fg-muted"
         animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration: 40, ease: "linear", repeat: Infinity }}
+        transition={{ duration: 60, ease: "linear", repeat: Infinity }}
       >
-        {[...items, ...items, ...items, ...items].map((item, i) => (
+        {[...items, ...items, ...items].map((item, i) => (
           <span key={i} className="flex items-center gap-12">
             <span>{item}</span>
             <span className="text-accent">✦</span>

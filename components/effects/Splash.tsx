@@ -4,32 +4,62 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { profile } from "@/content/profile";
 
+const SESSION_KEY = "splash:shown";
+
+/**
+ * Splash preloader.
+ *
+ * Plays once per *session* (sessionStorage), so a visitor returning
+ * from a tab switch or hash-link doesn't sit through it again. Cleared
+ * automatically when the tab is closed.
+ */
 export function Splash() {
-  const [show, setShow] = useState(true);
+  // Start hidden. We decide on mount whether to show.
+  const [show, setShow] = useState(false);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    let cancelled = false;
+    let raf = 0;
+
+    try {
+      if (sessionStorage.getItem(SESSION_KEY)) {
+        // Already shown this session — skip entirely.
+        return;
+      }
+      sessionStorage.setItem(SESSION_KEY, "1");
+    } catch {
+      // sessionStorage blocked (private mode in some browsers) — show anyway.
+    }
+
+    setShow(true);
+
     const start = performance.now();
     const duration = 1500;
-    let raf = 0;
     const tick = (now: number) => {
+      if (cancelled) return;
       const t = Math.min(1, (now - start) / duration);
-      // ease-out
       const eased = 1 - Math.pow(1 - t, 3);
       setProgress(eased);
       if (t < 1) raf = requestAnimationFrame(tick);
-      else setTimeout(() => setShow(false), 250);
+      else setTimeout(() => !cancelled && setShow(false), 250);
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+    };
   }, []);
+
+  if (!show && progress === 0) return null;
 
   return (
     <motion.div
       aria-hidden={!show}
       initial={false}
       animate={{ y: show ? 0 : "-100%" }}
-      transition={{ duration: 0.9, ease: [0.83, 0, 0.17, 1], delay: show ? 0 : 0 }}
+      transition={{ duration: 0.9, ease: [0.83, 0, 0.17, 1] }}
       className="fixed inset-0 z-[200] grid place-items-center bg-bg"
       style={{ pointerEvents: show ? "auto" : "none" }}
     >

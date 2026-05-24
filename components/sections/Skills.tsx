@@ -3,10 +3,6 @@
 import { motion } from "framer-motion";
 import { skills } from "@/content/skills";
 
-function levelLabel(level: number) {
-  return ["", "Learning", "Working", "Confident", "Strong", "Expert"][level];
-}
-
 export function Skills() {
   return (
     <section id="skills" className="section relative bg-bg-subtle">
@@ -22,7 +18,7 @@ export function Skills() {
             </h2>
           </div>
           <p className="max-w-md text-sm text-fg-muted">
-            A working snapshot — not a checklist. Levels are honest, not aspirational.
+            A working snapshot. Five dots, honest scale.
           </p>
         </div>
 
@@ -33,7 +29,7 @@ export function Skills() {
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, delay: i * 0.05 }}
+              transition={{ duration: 0.5, delay: i * 0.04 }}
               className="rounded-3xl glass p-6"
             >
               <div className="flex items-center justify-between">
@@ -47,24 +43,10 @@ export function Skills() {
                 {cat.items.map((item) => (
                   <li
                     key={item.name}
-                    className="grid grid-cols-[1fr_auto_120px] items-center gap-3"
+                    className="flex items-center justify-between gap-4"
                   >
                     <span className="text-sm">{item.name}</span>
-                    <span className="font-mono text-[11px] uppercase tracking-wider text-fg-subtle">
-                      {levelLabel(item.level)}
-                    </span>
-                    <div
-                      aria-hidden
-                      className="relative h-1 w-full overflow-hidden rounded-full bg-fg/[0.06]"
-                    >
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${(item.level / 5) * 100}%` }}
-                        viewport={{ once: true, margin: "-40px" }}
-                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                        className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-accent/70 to-accent"
-                      />
-                    </div>
+                    <DotScale level={item.level} />
                   </li>
                 ))}
               </ul>
@@ -73,5 +55,35 @@ export function Skills() {
         </div>
       </div>
     </section>
+  );
+}
+
+/** 5-dot proficiency scale. Filled = accent, empty = muted ring. */
+function DotScale({ level }: { level: number }) {
+  return (
+    <div
+      role="img"
+      aria-label={`Proficiency ${level} out of 5`}
+      className="flex items-center gap-1.5"
+    >
+      {[1, 2, 3, 4, 5].map((n) => {
+        const filled = n <= level;
+        return (
+          <motion.span
+            key={n}
+            initial={{ scale: 0.6, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.3, delay: 0.04 * n, ease: "easeOut" }}
+            className={
+              "h-1.5 w-1.5 rounded-full transition-colors " +
+              (filled
+                ? "bg-accent shadow-[0_0_6px_hsl(var(--accent)/0.6)]"
+                : "bg-fg/15")
+            }
+          />
+        );
+      })}
+    </div>
   );
 }

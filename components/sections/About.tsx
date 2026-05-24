@@ -26,8 +26,8 @@ const traits = [
 const stats = [
   { n: "200+", l: "Datasets cleaned & fed into ERP" },
   { n: "30", l: "Days · Smart Campus boot camp" },
-  { n: "Top", l: "Smart India Hackathon — Semi Finalist" },
-  { n: "2", l: "Degrees in progress (B.Tech + IIT-M BS)" },
+  { n: "2", l: "Concurrent degrees (B.Tech + IIT-M BS)" },
+  { n: "5+", l: "Languages: Python, JS, Java, SQL, HTML/CSS" },
 ];
 
 export function About() {

@@ -14,12 +14,14 @@ import Lenis from "lenis";
  */
 export function SmoothScroll() {
   useEffect(() => {
+    // Native lerp-based smoothing instead of long duration easing.
+    // Shorter buffer = no growing easing-debt at the bottom of the page.
     const lenis = new Lenis({
-      duration: 1.15,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lerp: 0.12,        // 0..1, higher = snappier. 0.12 ≈ 80ms catch-up.
       smoothWheel: true,
-      // smoothTouch is not on the public types but the runtime accepts it
-      // (kept off — touch already smooths natively on most mobile browsers)
+      wheelMultiplier: 1,
+      touchMultiplier: 1,
+      syncTouch: false,
     });
 
     let rafId: number;

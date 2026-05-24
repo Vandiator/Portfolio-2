@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, Sparkles } from "lucide-react";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { profile } from "@/content/profile";
 import { Avatar } from "@/components/Avatar";
 
@@ -102,37 +102,6 @@ export function Hero() {
                   className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                 />
               </a>
-              <span className="ml-1 inline-flex items-center gap-1.5 text-xs text-fg-subtle">
-                <Sparkles size={12} className="text-accent" />
-                <span className="font-mono uppercase tracking-wider">
-                  AI-enabled · v1
-                </span>
-              </span>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: heroDelay + 1 }}
-              className="mt-10 flex items-center gap-5 text-fg-muted"
-            >
-              {[
-                { icon: Github, href: profile.socials.github, label: "GitHub" },
-                { icon: Linkedin, href: profile.socials.linkedin, label: "LinkedIn" },
-                { icon: Mail, href: profile.socials.email, label: "Email" },
-              ].map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target={s.href.startsWith("http") ? "_blank" : undefined}
-                  rel="noopener"
-                  aria-label={s.label}
-                  className="transition-colors hover:text-accent"
-                  data-cursor-text={s.label.toLowerCase()}
-                >
-                  <s.icon size={18} />
-                </a>
-              ))}
             </motion.div>
           </div>
 
@@ -150,20 +119,6 @@ export function Hero() {
             <Avatar />
           </motion.div>
         </div>
-
-        {/* Meta strip */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: heroDelay + 1.2 }}
-          className="mt-14 hidden items-center justify-between border-t border-border/40 pt-6 font-mono text-xs uppercase tracking-widest text-fg-subtle md:flex"
-        >
-          <span>{profile.location}</span>
-          <span className="hidden md:inline">
-            scroll · cinematic portfolio · 2026
-          </span>
-          <span>{new Date().getFullYear()}</span>
-        </motion.div>
       </div>
     </section>
   );

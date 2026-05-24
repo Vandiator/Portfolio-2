@@ -5,10 +5,13 @@ import { useEffect, useRef } from "react";
 import { Typewriter } from "@/components/effects/Typewriter";
 
 /**
- * Cinematic avatar frame (no real photo required for v1).
- * - Animated film viewfinder around an "OUR HERO" placeholder.
- * - Eyes follow cursor (David-Heckhoff-style).
- * - Replace the inner block with an Image when you have a portrait.
+ * Cinematic avatar frame.
+ *
+ * Kept: corner brackets, soft halo, head silhouette, eyes that track cursor.
+ * Removed: the "scene 01 · vandiator", "● rec", "24fps", "2026 — present"
+ * filmstrip text — looked clever once, was noise on every visit.
+ *
+ * When you have a real photo, replace the SVG block with <Image />.
  */
 export function Avatar() {
   const ref = useRef<HTMLDivElement>(null);
@@ -18,7 +21,7 @@ export function Avatar() {
   const sy = useSpring(py, { stiffness: 80, damping: 14 });
   const eyeX = useTransform(sx, [-1, 1], [-3, 3]);
   const eyeY = useTransform(sy, [-1, 1], [-2, 2]);
-  const tilt = useTransform(sx, [-1, 1], [-4, 4]);
+  const tilt = useTransform(sx, [-1, 1], [-3, 3]);
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
@@ -41,8 +44,8 @@ export function Avatar() {
       style={{ rotate: tilt }}
       className="relative mx-auto aspect-[4/5] w-full max-w-sm"
     >
-      {/* Outer film border with corner ticks */}
-      <div className="absolute inset-0 rounded-[28px] border border-border/60 bg-bg-elevated/50 backdrop-blur" />
+      {/* Outer film border */}
+      <div className="absolute inset-0 rounded-[28px] border border-border/60 bg-bg-elevated/50" />
       <div className="pointer-events-none absolute inset-2 rounded-[22px] border border-accent/30" />
 
       {/* Corner brackets */}
@@ -63,26 +66,8 @@ export function Avatar() {
         />
       ))}
 
-      {/* Crosshair center */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent/80"
-      />
-
-      {/* Top film code */}
-      <div className="absolute left-5 right-5 top-5 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-fg-subtle">
-        <span>scene 01 · vandiator</span>
-        <span className="text-accent">● rec</span>
-      </div>
-
-      {/* Bottom film code */}
-      <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-fg-subtle">
-        <span>24fps</span>
-        <span>2026 — present</span>
-      </div>
-
       {/* Inner "portrait" — abstract face that follows cursor */}
-      <div className="absolute inset-12 grid place-items-center">
+      <div className="absolute inset-10 grid place-items-center">
         <div className="relative h-full w-full">
           {/* Soft halo */}
           <div className="absolute inset-0 rounded-full bg-accent/10 blur-2xl" />
@@ -99,13 +84,11 @@ export function Avatar() {
                 <stop offset="100%" stopColor="hsl(var(--accent) / 0)" />
               </linearGradient>
             </defs>
-            {/* Shoulders */}
             <path
               d="M10 230 C 30 175, 75 165, 100 165 C 125 165, 170 175, 190 230 Z"
               fill="url(#hg)"
               opacity="0.55"
             />
-            {/* Head */}
             <circle
               cx="100"
               cy="100"
@@ -114,13 +97,7 @@ export function Avatar() {
               strokeWidth="1"
               opacity="0.6"
             />
-            {/* Inner head fill */}
-            <circle
-              cx="100"
-              cy="100"
-              r="52"
-              fill="hsl(var(--bg-elevated))"
-            />
+            <circle cx="100" cy="100" r="52" fill="hsl(var(--bg-elevated))" />
           </svg>
 
           {/* Eyes that track cursor */}
