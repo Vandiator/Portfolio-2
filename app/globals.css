@@ -72,14 +72,22 @@
     }
   }
 
-  /* Reduced motion respect */
+  /* Reduced motion: kill loud animations only.
+     We intentionally let the gentle whileInView fade/slide reveals run
+     at full speed because they are short (<1s) and not vestibular. */
   @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
+    .orb,
+    .gradient-mesh,
+    .grain,
+    .vignette,
+    .animate-caret,
+    .animate-marquee,
+    [class*="animate-ping"],
+    [class*="animate-pulse"],
+    [class*="animate-shimmer"] {
+      animation: none !important;
+    }
+    html {
       scroll-behavior: auto !important;
     }
   }
@@ -166,58 +174,111 @@
   }
 
   /* ============================================================
-     ANIMATED GRADIENT MESH — sits at z-[-20], slowest layer.
-     Three large soft conic/radial blobs that drift over a long
-     loop using only background-position (GPU-friendly). Below
-     the aurora orbs which are smaller + more local.
+     ANIMATED GRADIENT MESH — nebula palette.
+     Six radial color blobs (amber, saffron, magenta, violet, teal,
+     deep blue) drift across the page on a 36s loop, each with its
+     own animation-delay so the field never repeats exactly.
+     Pure CSS background-position drift = GPU-only, single repaint.
      ============================================================ */
   .gradient-mesh {
     position: absolute;
     inset: -10%;
     pointer-events: none;
     background-image:
+      /* warm amber, top-left */
       radial-gradient(
-        50% 60% at 22% 18%,
+        45% 55% at 22% 18%,
         hsl(28 95% 60% / 0.32) 0%,
         transparent 70%
       ),
+      /* deep ember red, top-right */
       radial-gradient(
-        45% 55% at 78% 32%,
-        hsl(15 92% 56% / 0.28) 0%,
+        40% 50% at 78% 22%,
+        hsl(8 88% 56% / 0.26) 0%,
         transparent 72%
       ),
+      /* magenta-pink, mid-left */
       radial-gradient(
-        55% 60% at 50% 88%,
-        hsl(40 95% 62% / 0.22) 0%,
+        42% 50% at 18% 58%,
+        hsl(320 78% 60% / 0.24) 0%,
+        transparent 72%
+      ),
+      /* electric violet, center */
+      radial-gradient(
+        50% 55% at 55% 50%,
+        hsl(258 80% 62% / 0.22) 0%,
         transparent 75%
       ),
+      /* teal-cyan, mid-right */
       radial-gradient(
-        40% 45% at 88% 78%,
-        hsl(8 90% 58% / 0.22) 0%,
+        38% 48% at 82% 60%,
+        hsl(188 80% 56% / 0.22) 0%,
+        transparent 72%
+      ),
+      /* deep nebula blue, bottom */
+      radial-gradient(
+        55% 55% at 50% 92%,
+        hsl(228 78% 52% / 0.26) 0%,
         transparent 75%
       );
-    background-size: 200% 200%, 200% 200%, 200% 200%, 200% 200%;
-    background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%;
-    filter: blur(60px) saturate(120%);
-    opacity: 0.6;
-    animation: meshDrift 28s ease-in-out infinite;
+    background-size:
+      200% 200%,
+      200% 200%,
+      220% 220%,
+      240% 240%,
+      200% 200%,
+      220% 220%;
+    background-position:
+      0% 0%,
+      100% 0%,
+      0% 60%,
+      50% 50%,
+      100% 60%,
+      50% 100%;
+    filter: blur(70px) saturate(135%);
+    opacity: 0.7;
+    animation: meshDrift 36s ease-in-out infinite;
   }
   .light .gradient-mesh {
-    opacity: 0.5;
-    filter: blur(70px) saturate(115%);
+    opacity: 0.55;
+    filter: blur(85px) saturate(120%);
   }
   @keyframes meshDrift {
     0%, 100% {
-      background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%;
+      background-position:
+        0% 0%,
+        100% 0%,
+        0% 60%,
+        50% 50%,
+        100% 60%,
+        50% 100%;
     }
     25% {
-      background-position: 30% 20%, 70% 30%, 20% 80%, 80% 70%;
+      background-position:
+        30% 20%,
+        70% 30%,
+        20% 80%,
+        70% 30%,
+        80% 80%,
+        70% 70%;
     }
     50% {
-      background-position: 60% 40%, 40% 60%, 60% 50%, 40% 50%;
+      background-position:
+        60% 40%,
+        40% 60%,
+        60% 30%,
+        30% 70%,
+        50% 30%,
+        30% 60%;
     }
     75% {
-      background-position: 20% 60%, 80% 40%, 80% 30%, 20% 90%;
+      background-position:
+        20% 60%,
+        80% 40%,
+        80% 30%,
+        70% 70%,
+        20% 60%,
+        80% 30%;
     }
   }
 
