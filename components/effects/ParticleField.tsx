@@ -3,14 +3,19 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Floating particles + cursor connection lines.
+ * Star field — space-themed background.
  *
- * - 80 particles drift around the viewport
- * - When the cursor gets within 200px of a particle, a line is drawn
- *   between cursor and particle, fading with distance
- * - Same particle also glows brighter near the cursor
- * - Honors prefers-reduced-motion (renders a static dot field)
- * - Reads --accent CSS variable so it auto-matches dark/light theme
+ * Behaviour:
+ *   - 140 stars in 3 size tiers (faint pinpricks → bright headliners)
+ *   - Each star drifts slowly + has its own twinkle phase
+ *   - Cursor within 220px → constellation lines connect cursor to stars,
+ *     and the nearest stars flare brighter
+ *   - Honors prefers-reduced-motion (no drift, no twinkle, lines still draw)
+ *
+ * Colour:
+ *   - Reads --star-rgb at runtime from the host element so dark/light
+ *     themes can pick contrasting colours without re-mounting the canvas.
+ *     Dark mode: warm white. Light mode: deep navy blue.
  */
 export function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -25,30 +30,46 @@ export function ParticleField() {
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    type Particle = {
+    type Star = {
       x: number;
       y: number;
-      sz: number;
+      r: number;          // base radius
+      tier: 0 | 1 | 2;    // 0 = faint, 1 = mid, 2 = bright
       vx: number;
       vy: number;
+      tw: number;         // twinkle phase (radians)
+      tws: number;        // twinkle speed
     };
 
     let W = 0;
     let H = 0;
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const particles: Particle[] = [];
-    const COUNT = 80;
-    const LINK_DIST = 200;
+    const stars: Star[] = [];
+    const COUNT = 140;
+    const LINK_DIST = 220;
 
     function spawn() {
-      particles.length = 0;
+      stars.length = 0;
       for (let i = 0; i < COUNT; i++) {
-        particles.push({
+        // Tier weights: 60% faint, 30% mid, 10% bright headliners
+        const t = Math.random();
+        const tier: Star["tier"] = t < 0.6 ? 0 : t < 0.9 ? 1 : 2;
+        const baseR =
+          tier === 0
+            ? 0.5 + Math.random() * 0.6
+            : tier === 1
+              ? 1.0 + Math.random() * 0.8
+              : 1.6 + Math.random() * 1.2;
+
+        stars.push({
           x: Math.random() * W,
           y: Math.random() * H,
-          sz: 0.8 + Math.random() * 1.6,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
+          r: baseR,
+          tier,
+          vx: (Math.random() - 0.5) * 0.18,
+          vy: (Math.random() - 0.5) * 0.18,
+          tw: Math.random() * Math.PI * 2,
+          tws: 0.012 + Math.random() * 0.02,
         });
       }
     }
@@ -62,89 +83,98 @@ export function ParticleField() {
       canvas!.style.width = `${W}px`;
       canvas!.style.height = `${H}px`;
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
-      if (particles.length === 0) spawn();
+      if (stars.length === 0) spawn();
     }
     resize();
 
-    let mx = -1000;
-    let my = -1000;
+    let mx = -10000;
+    let my = -10000;
     const onMove = (e: MouseEvent) => {
       mx = e.clientX;
       my = e.clientY;
     };
     const onLeave = () => {
-      mx = -1000;
-      my = -1000;
+      mx = -10000;
+      my = -10000;
     };
 
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseout", onLeave);
     window.addEventListener("resize", resize);
 
-    function getAccent(): string {
-      // Read the CSS variable so we follow dark/light theme automatically
-      const v = getComputedStyle(document.documentElement)
-        .getPropertyValue("--accent")
-        .trim();
-      // --accent is "H S% L%"; reconstitute it
-      return v ? `hsl(${v})` : "#ff9a3c";
+    function getStarRgb(): string {
+      // Pick a high-contrast colour vs the active theme.
+      // We read the documentElement classes (set by ThemeToggle).
+      const isLight = document.documentElement.classList.contains("light");
+      return isLight ? "10, 18, 44" : "245, 240, 230"; // navy ink vs warm white
     }
 
     let raf = 0;
 
     function frame() {
       ctx!.clearRect(0, 0, W, H);
-      const color = getAccent();
+      const rgb = getStarRgb();
 
-      for (const p of particles) {
+      for (const s of stars) {
         if (!reduceMotion) {
-          p.x += p.vx;
-          p.y += p.vy;
-          if (p.x < 0 || p.x > W) p.vx *= -1;
-          if (p.y < 0 || p.y > H) p.vy *= -1;
+          s.x += s.vx;
+          s.y += s.vy;
+          if (s.x < 0 || s.x > W) s.vx *= -1;
+          if (s.y < 0 || s.y > H) s.vy *= -1;
+          s.tw += s.tws;
         }
 
-        // Base particle dot
-        ctx!.globalAlpha = 0.18;
-        ctx!.fillStyle = color;
+        // Twinkle: 0.65–1.0 multiplier on alpha for non-faint tiers.
+        const twinkle =
+          s.tier === 0
+            ? 1
+            : 0.65 + 0.35 * (0.5 + 0.5 * Math.sin(s.tw));
+
+        const baseAlpha =
+          s.tier === 0 ? 0.45 : s.tier === 1 ? 0.7 : 0.95;
+
+        // Distance to cursor
+        const dx = mx - s.x;
+        const dy = my - s.y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        const near = d < LINK_DIST;
+        const t = near ? 1 - d / LINK_DIST : 0;
+
+        // 1) Soft halo for bright stars (and any star inside cursor reach)
+        if (s.tier === 2 || near) {
+          const haloR = s.r * (s.tier === 2 ? 6 : 4) * (1 + t * 0.5);
+          const halo = ctx!.createRadialGradient(s.x, s.y, 0, s.x, s.y, haloR);
+          const haloAlpha = (s.tier === 2 ? 0.18 : 0.08) * twinkle + t * 0.25;
+          halo.addColorStop(0, `rgba(${rgb}, ${haloAlpha})`);
+          halo.addColorStop(1, `rgba(${rgb}, 0)`);
+          ctx!.fillStyle = halo;
+          ctx!.beginPath();
+          ctx!.arc(s.x, s.y, haloR, 0, Math.PI * 2);
+          ctx!.fill();
+        }
+
+        // 2) Star body
+        const bodyAlpha = baseAlpha * twinkle + t * 0.4;
+        ctx!.fillStyle = `rgba(${rgb}, ${Math.min(1, bodyAlpha)})`;
         ctx!.beginPath();
-        ctx!.arc(p.x, p.y, p.sz, 0, Math.PI * 2);
+        ctx!.arc(s.x, s.y, s.r * (1 + t * 0.6), 0, Math.PI * 2);
         ctx!.fill();
 
-        // Cursor interaction
-        const dx = mx - p.x;
-        const dy = my - p.y;
-        const d = Math.sqrt(dx * dx + dy * dy);
-        if (d < LINK_DIST) {
-          const t = 1 - d / LINK_DIST;
-
-          // Connection line
-          ctx!.globalAlpha = t * 0.55;
-          ctx!.strokeStyle = color;
+        // 3) Constellation line to cursor
+        if (near) {
+          ctx!.strokeStyle = `rgba(${rgb}, ${t * 0.45})`;
           ctx!.lineWidth = 1;
           ctx!.beginPath();
-          ctx!.moveTo(p.x, p.y);
+          ctx!.moveTo(s.x, s.y);
           ctx!.lineTo(mx, my);
           ctx!.stroke();
-
-          // Particle glow boost
-          ctx!.globalAlpha = t * 0.85;
-          ctx!.fillStyle = color;
-          ctx!.beginPath();
-          ctx!.arc(p.x, p.y, p.sz * 2.4, 0, Math.PI * 2);
-          ctx!.fill();
         }
       }
 
-      ctx!.globalAlpha = 1;
-      if (!reduceMotion) raf = requestAnimationFrame(frame);
-    }
-
-    if (reduceMotion) {
-      frame();
-    } else {
       raf = requestAnimationFrame(frame);
     }
+
+    raf = requestAnimationFrame(frame);
 
     return () => {
       cancelAnimationFrame(raf);

@@ -33,9 +33,12 @@ export function Navbar() {
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 1.4 }}
       className={cn(
         "fixed inset-x-0 top-0 z-40 transition-all duration-300",
+        // Always keep a faint glass surface so the bar is readable
+        // against the colorful nebula. Bumps to fully opaque when scrolled.
+        "border-b backdrop-blur-md",
         scrolled
-          ? "border-b border-border/60 bg-bg/70 backdrop-blur-xl"
-          : "border-b border-transparent"
+          ? "border-border/60 bg-bg/75 backdrop-blur-xl"
+          : "border-transparent bg-bg/30"
       )}
     >
       <div className="container-page flex h-16 items-center justify-between">
