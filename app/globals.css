@@ -19,8 +19,10 @@
   }
 
   .light {
-    --bg: 30 30% 97%;
-    --bg-subtle: 28 24% 93%;
+    /* Cream / off-white canvas — never flat #FFFFFF, so the gradient
+       mesh + orbs have a midtone to push against. */
+    --bg: 32 36% 95%;
+    --bg-subtle: 28 28% 91%;
     --bg-elevated: 0 0% 100%;
     --fg: 220 25% 12%;
     --fg-muted: 220 12% 30%;
@@ -239,9 +241,43 @@
     opacity: 0.7;
     animation: meshDrift 36s ease-in-out infinite;
   }
+  /* Light theme: brighter saturation + multiply blend so the cream
+     canvas tints toward each color instead of getting paler. */
   .light .gradient-mesh {
-    opacity: 0.55;
-    filter: blur(85px) saturate(120%);
+    background-image:
+      radial-gradient(
+        45% 55% at 22% 18%,
+        hsl(28 95% 56% / 0.55) 0%,
+        transparent 72%
+      ),
+      radial-gradient(
+        40% 50% at 78% 22%,
+        hsl(8 92% 54% / 0.45) 0%,
+        transparent 72%
+      ),
+      radial-gradient(
+        42% 50% at 18% 58%,
+        hsl(320 80% 58% / 0.42) 0%,
+        transparent 72%
+      ),
+      radial-gradient(
+        50% 55% at 55% 50%,
+        hsl(258 82% 60% / 0.38) 0%,
+        transparent 75%
+      ),
+      radial-gradient(
+        38% 48% at 82% 60%,
+        hsl(188 82% 50% / 0.4) 0%,
+        transparent 72%
+      ),
+      radial-gradient(
+        55% 55% at 50% 92%,
+        hsl(228 82% 52% / 0.45) 0%,
+        transparent 75%
+      );
+    mix-blend-mode: multiply;
+    filter: blur(80px) saturate(155%);
+    opacity: 0.85;
   }
   @keyframes meshDrift {
     0%, 100% {
@@ -293,9 +329,12 @@
     animation-direction: alternate;
     animation-timing-function: ease-in-out;
   }
+  /* Light: stronger orbs + multiply blend so they stain warmly
+     instead of glowing white. */
   .light .orb {
-    opacity: 0.42;
-    filter: blur(110px);
+    opacity: 0.75;
+    filter: blur(100px) saturate(150%);
+    mix-blend-mode: multiply;
   }
   .orb-1 {
     width: clamp(280px, 42vw, 640px);
@@ -360,6 +399,13 @@
       hsl(var(--bg) / 0.55) 90%
     );
     pointer-events: none;
+  }
+  .light .vignette {
+    background: radial-gradient(
+      ellipse at center,
+      transparent 35%,
+      hsl(var(--bg) / 0.4) 95%
+    );
   }
 
   /* Subtle dark grain — sparse, low-density, no white speckles */
