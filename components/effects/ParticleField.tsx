@@ -103,10 +103,8 @@ export function ParticleField() {
     window.addEventListener("resize", resize);
 
     function getStarRgb(): string {
-      // Pick a high-contrast colour vs the active theme.
-      // We read the documentElement classes (set by ThemeToggle).
-      const isLight = document.documentElement.classList.contains("light");
-      return isLight ? "10, 18, 44" : "245, 240, 230"; // navy ink vs warm white
+      // Single dark theme — warm white starlight always
+      return "245, 240, 230";
     }
 
     let raf = 0;

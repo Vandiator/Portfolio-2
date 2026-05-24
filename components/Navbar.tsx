@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { profile } from "@/content/profile";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "@/components/effects/ThemeToggle";
 
 const links = [
   { href: "#about", label: "About" },
@@ -74,7 +73,6 @@ export function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          <ThemeToggle />
           <a
             href={profile.resumeUrl}
             target="_blank"
@@ -86,17 +84,14 @@ export function Navbar() {
           </a>
         </div>
 
-        <div className="flex items-center gap-2 md:hidden">
-          <ThemeToggle />
-          <button
-            aria-label="Toggle menu"
-            aria-expanded={mobileOpen}
-            onClick={() => setMobileOpen((v) => !v)}
-            className="grid h-10 w-10 place-items-center rounded-full border border-border/60"
-          >
-            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
-        </div>
+        <button
+          aria-label="Toggle menu"
+          aria-expanded={mobileOpen}
+          onClick={() => setMobileOpen((v) => !v)}
+          className="grid h-10 w-10 place-items-center rounded-full border border-border/60 md:hidden"
+        >
+          {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+        </button>
       </div>
 
       <AnimatePresence>

@@ -3,9 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  :root,
-  .dark {
-    /* Cinematic dark theme — default */
+  :root {
+    /* Cinematic dark — single canonical theme */
     --bg: 220 18% 5%;
     --bg-subtle: 220 16% 7%;
     --bg-elevated: 220 14% 10%;
@@ -16,24 +15,7 @@
     --accent-soft: 28 95% 60%;
     --accent-fg: 220 18% 5%;
     --border: 220 10% 18%;
-  }
 
-  .light {
-    /* Cream / off-white canvas — never flat #FFFFFF, so the gradient
-       mesh + orbs have a midtone to push against. */
-    --bg: 32 36% 95%;
-    --bg-subtle: 28 28% 91%;
-    --bg-elevated: 0 0% 100%;
-    --fg: 220 25% 12%;
-    --fg-muted: 220 12% 30%;
-    --fg-subtle: 220 8% 50%;
-    --accent: 18 90% 48%;
-    --accent-soft: 18 90% 48%;
-    --accent-fg: 30 30% 97%;
-    --border: 220 12% 84%;
-  }
-
-  :root {
     --font-sans: var(--font-geist-sans);
     --font-mono: var(--font-geist-mono);
     --font-display: var(--font-instrument);
@@ -50,7 +32,6 @@
   body {
     @apply bg-bg text-fg font-sans antialiased;
     font-feature-settings: "ss01", "cv11";
-    transition: background-color 0.5s ease, color 0.5s ease;
   }
 
   /* Hard 1-second cursor blink for the typewriter */
@@ -66,7 +47,6 @@
     @apply bg-accent/30 text-fg;
   }
 
-  /* Hide native cursor on desktop when custom cursor active */
   @media (hover: hover) and (pointer: fine) {
     body.has-custom-cursor,
     body.has-custom-cursor * {
@@ -74,9 +54,6 @@
     }
   }
 
-  /* Reduced motion: kill loud animations only.
-     We intentionally let the gentle whileInView fade/slide reveals run
-     at full speed because they are short (<1s) and not vestibular. */
   @media (prefers-reduced-motion: reduce) {
     .orb,
     .gradient-mesh,
@@ -94,7 +71,6 @@
     }
   }
 
-  /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -129,12 +105,7 @@
     text-wrap: balance;
   }
 
-  /* ============================================================
-     GLASS — reusable frosted-glass card surface.
-     - Translucent background, backdrop-blur, soft inner highlight,
-       ring border that lights up on hover.
-     - Works in both dark + light themes (uses tokens, not hex).
-     ============================================================ */
+  /* GLASS — frosted-glass card surface. */
   .glass {
     position: relative;
     background:
@@ -154,19 +125,6 @@
     transition: border-color 0.4s ease, background 0.4s ease,
       box-shadow 0.4s ease, transform 0.4s ease;
   }
-  .light .glass {
-    background:
-      linear-gradient(
-        180deg,
-        hsl(0 0% 100% / 0.7),
-        hsl(0 0% 100% / 0.4)
-      );
-    border-color: hsl(var(--fg) / 0.1);
-    box-shadow:
-      inset 0 1px 0 hsl(0 0% 100% / 0.8),
-      0 1px 0 hsl(var(--fg) / 0.04),
-      0 18px 40px -22px hsl(var(--fg) / 0.18);
-  }
   .glass-hover:hover {
     border-color: hsl(var(--accent) / 0.45);
     box-shadow:
@@ -175,150 +133,52 @@
       0 24px 60px -22px hsl(var(--accent) / 0.25);
   }
 
-  /* ============================================================
-     ANIMATED GRADIENT MESH — nebula palette.
-     Six radial color blobs (amber, saffron, magenta, violet, teal,
-     deep blue) drift across the page on a 36s loop, each with its
-     own animation-delay so the field never repeats exactly.
-     Pure CSS background-position drift = GPU-only, single repaint.
-     ============================================================ */
+  /* ANIMATED NEBULA MESH — six radial colour blobs drifting on a 36s loop. */
   .gradient-mesh {
     position: absolute;
     inset: -10%;
     pointer-events: none;
     background-image:
-      /* warm amber, top-left */
-      radial-gradient(
-        45% 55% at 22% 18%,
-        hsl(28 95% 60% / 0.32) 0%,
-        transparent 70%
-      ),
-      /* deep ember red, top-right */
-      radial-gradient(
-        40% 50% at 78% 22%,
-        hsl(8 88% 56% / 0.26) 0%,
-        transparent 72%
-      ),
-      /* magenta-pink, mid-left */
-      radial-gradient(
-        42% 50% at 18% 58%,
-        hsl(320 78% 60% / 0.24) 0%,
-        transparent 72%
-      ),
-      /* electric violet, center */
-      radial-gradient(
-        50% 55% at 55% 50%,
-        hsl(258 80% 62% / 0.22) 0%,
-        transparent 75%
-      ),
-      /* teal-cyan, mid-right */
-      radial-gradient(
-        38% 48% at 82% 60%,
-        hsl(188 80% 56% / 0.22) 0%,
-        transparent 72%
-      ),
-      /* deep nebula blue, bottom */
-      radial-gradient(
-        55% 55% at 50% 92%,
-        hsl(228 78% 52% / 0.26) 0%,
-        transparent 75%
-      );
+      radial-gradient(45% 55% at 22% 18%, hsl(28 95% 60% / 0.32) 0%, transparent 70%),
+      radial-gradient(40% 50% at 78% 22%, hsl(8 88% 56% / 0.26) 0%, transparent 72%),
+      radial-gradient(42% 50% at 18% 58%, hsl(320 78% 60% / 0.24) 0%, transparent 72%),
+      radial-gradient(50% 55% at 55% 50%, hsl(258 80% 62% / 0.22) 0%, transparent 75%),
+      radial-gradient(38% 48% at 82% 60%, hsl(188 80% 56% / 0.22) 0%, transparent 72%),
+      radial-gradient(55% 55% at 50% 92%, hsl(228 78% 52% / 0.26) 0%, transparent 75%);
     background-size:
-      200% 200%,
-      200% 200%,
-      220% 220%,
-      240% 240%,
-      200% 200%,
-      220% 220%;
+      200% 200%, 200% 200%, 220% 220%,
+      240% 240%, 200% 200%, 220% 220%;
     background-position:
-      0% 0%,
-      100% 0%,
-      0% 60%,
-      50% 50%,
-      100% 60%,
-      50% 100%;
+      0% 0%, 100% 0%, 0% 60%,
+      50% 50%, 100% 60%, 50% 100%;
     filter: blur(70px) saturate(135%);
     opacity: 0.7;
     animation: meshDrift 36s ease-in-out infinite;
   }
-  /* Light theme: brighter saturation + multiply blend so the cream
-     canvas tints toward each color instead of getting paler. */
-  .light .gradient-mesh {
-    background-image:
-      radial-gradient(
-        45% 55% at 22% 18%,
-        hsl(28 95% 56% / 0.55) 0%,
-        transparent 72%
-      ),
-      radial-gradient(
-        40% 50% at 78% 22%,
-        hsl(8 92% 54% / 0.45) 0%,
-        transparent 72%
-      ),
-      radial-gradient(
-        42% 50% at 18% 58%,
-        hsl(320 80% 58% / 0.42) 0%,
-        transparent 72%
-      ),
-      radial-gradient(
-        50% 55% at 55% 50%,
-        hsl(258 82% 60% / 0.38) 0%,
-        transparent 75%
-      ),
-      radial-gradient(
-        38% 48% at 82% 60%,
-        hsl(188 82% 50% / 0.4) 0%,
-        transparent 72%
-      ),
-      radial-gradient(
-        55% 55% at 50% 92%,
-        hsl(228 82% 52% / 0.45) 0%,
-        transparent 75%
-      );
-    mix-blend-mode: multiply;
-    filter: blur(80px) saturate(155%);
-    opacity: 0.85;
-  }
   @keyframes meshDrift {
     0%, 100% {
       background-position:
-        0% 0%,
-        100% 0%,
-        0% 60%,
-        50% 50%,
-        100% 60%,
-        50% 100%;
+        0% 0%, 100% 0%, 0% 60%,
+        50% 50%, 100% 60%, 50% 100%;
     }
     25% {
       background-position:
-        30% 20%,
-        70% 30%,
-        20% 80%,
-        70% 30%,
-        80% 80%,
-        70% 70%;
+        30% 20%, 70% 30%, 20% 80%,
+        70% 30%, 80% 80%, 70% 70%;
     }
     50% {
       background-position:
-        60% 40%,
-        40% 60%,
-        60% 30%,
-        30% 70%,
-        50% 30%,
-        30% 60%;
+        60% 40%, 40% 60%, 60% 30%,
+        30% 70%, 50% 30%, 30% 60%;
     }
     75% {
       background-position:
-        20% 60%,
-        80% 40%,
-        80% 30%,
-        70% 70%,
-        20% 60%,
-        80% 30%;
+        20% 60%, 80% 40%, 80% 30%,
+        70% 70%, 20% 60%, 80% 30%;
     }
   }
 
-  /* Aurora orbs for hero background */
+  /* Aurora orbs — hero-local accent glows */
   .orb {
     position: absolute;
     border-radius: 9999px;
@@ -328,13 +188,6 @@
     animation-iteration-count: infinite;
     animation-direction: alternate;
     animation-timing-function: ease-in-out;
-  }
-  /* Light: stronger orbs + multiply blend so they stain warmly
-     instead of glowing white. */
-  .light .orb {
-    opacity: 0.75;
-    filter: blur(100px) saturate(150%);
-    mix-blend-mode: multiply;
   }
   .orb-1 {
     width: clamp(280px, 42vw, 640px);
@@ -400,15 +253,7 @@
     );
     pointer-events: none;
   }
-  .light .vignette {
-    background: radial-gradient(
-      ellipse at center,
-      transparent 35%,
-      hsl(var(--bg) / 0.4) 95%
-    );
-  }
 
-  /* Subtle dark grain — sparse, low-density, no white speckles */
   .grain {
     position: absolute;
     inset: 0;
@@ -417,9 +262,6 @@
     background-size: 320px 320px;
     mix-blend-mode: multiply;
     opacity: 0.22;
-  }
-  .light .grain {
-    opacity: 0.14;
   }
 
   @keyframes orbFloat1 {
@@ -444,7 +286,6 @@
     100% { transform: translate3d(30px, -20px, 0) scale(0.9); opacity: 0.25; }
   }
 
-  /* shine border */
   .shine-border {
     position: relative;
     isolation: isolate;
