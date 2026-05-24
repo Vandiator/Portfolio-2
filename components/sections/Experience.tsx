@@ -10,7 +10,7 @@ export function Experience() {
         <p className="font-mono text-xs uppercase tracking-[0.25em] text-fg-subtle">
           04 — Experience
         </p>
-        <h2 className="mt-3 text-balance text-3xl font-medium md:text-5xl">
+        <h2 className="mt-3 text-balance text-2xl font-medium sm:text-3xl md:text-5xl">
           Where I&apos;ve been{" "}
           <span className="text-display italic text-accent">building</span>.
         </h2>
@@ -39,33 +39,35 @@ export function Experience() {
                 </div>
 
                 <div className="md:pl-12">
-                  <h3 className="text-xl font-medium md:text-2xl">{exp.role}</h3>
-                  <p className="mt-1 text-fg-muted">{exp.company}</p>
-                  <p className="mt-4 text-sm text-fg-muted md:text-base">
-                    {exp.summary}
-                  </p>
+                  <div className="rounded-3xl glass p-6 md:p-8">
+                    <h3 className="text-xl font-medium md:text-2xl">{exp.role}</h3>
+                    <p className="mt-1 text-fg-muted">{exp.company}</p>
+                    <p className="mt-4 text-sm text-fg-muted md:text-base">
+                      {exp.summary}
+                    </p>
 
-                  <ul className="mt-4 space-y-2">
-                    {exp.highlights.map((h) => (
-                      <li
-                        key={h}
-                        className="flex gap-3 text-sm text-fg-muted md:text-[15px]"
-                      >
-                        <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
-                        <span>{h}</span>
-                      </li>
-                    ))}
-                  </ul>
+                    <ul className="mt-4 space-y-2">
+                      {exp.highlights.map((h) => (
+                        <li
+                          key={h}
+                          className="flex gap-3 text-sm text-fg-muted md:text-[15px]"
+                        >
+                          <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
+                          <span>{h}</span>
+                        </li>
+                      ))}
+                    </ul>
 
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {exp.tech.map((t) => (
-                      <span
-                        key={t}
-                        className="rounded-full border border-border/60 bg-bg-elevated/40 px-2.5 py-1 font-mono text-[11px] text-fg-subtle"
-                      >
-                        {t}
-                      </span>
-                    ))}
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {exp.tech.map((t) => (
+                        <span
+                          key={t}
+                          className="rounded-full border border-border/60 bg-bg-elevated/40 px-2.5 py-1 font-mono text-[11px] text-fg-subtle"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </motion.li>

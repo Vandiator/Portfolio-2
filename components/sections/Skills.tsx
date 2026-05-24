@@ -16,7 +16,7 @@ export function Skills() {
             <p className="font-mono text-xs uppercase tracking-[0.25em] text-fg-subtle">
               03 — Toolkit
             </p>
-            <h2 className="mt-3 text-balance text-3xl font-medium md:text-5xl">
+            <h2 className="mt-3 text-balance text-2xl font-medium sm:text-3xl md:text-5xl">
               Things I reach for{" "}
               <span className="text-display italic text-accent">often</span>.
             </h2>
@@ -34,7 +34,7 @@ export function Skills() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: i * 0.05 }}
-              className="rounded-3xl border border-border/60 bg-bg-elevated/40 p-6 backdrop-blur"
+              className="rounded-3xl glass p-6"
             >
               <div className="flex items-center justify-between">
                 <h3 className="font-medium">{cat.name}</h3>

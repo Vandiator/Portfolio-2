@@ -15,7 +15,7 @@ export function Education() {
         <p className="font-mono text-xs uppercase tracking-[0.25em] text-fg-subtle">
           05 — Studies
         </p>
-        <h2 className="mt-3 text-balance text-3xl font-medium md:text-5xl">
+        <h2 className="mt-3 text-balance text-2xl font-medium sm:text-3xl md:text-5xl">
           Always a{" "}
           <span className="text-display italic text-accent">student</span> first.
         </h2>
@@ -28,7 +28,7 @@ export function Education() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: i * 0.05 }}
-              className="rounded-3xl border border-border/60 bg-bg-elevated/40 p-6 backdrop-blur"
+              className="rounded-3xl glass p-6"
             >
               <div className="flex items-start gap-3">
                 <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent">
@@ -74,7 +74,7 @@ export function Education() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6 }}
-            className="rounded-3xl border border-border/60 bg-bg-elevated/40 p-6"
+            className="rounded-3xl glass p-6"
           >
             <div className="flex items-center gap-2">
               <Award size={16} className="text-accent" />
@@ -97,7 +97,7 @@ export function Education() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6, delay: 0.05 }}
-            className="rounded-3xl border border-border/60 bg-bg-elevated/40 p-6"
+            className="rounded-3xl glass p-6"
           >
             <h3 className="font-mono text-xs uppercase tracking-widest text-fg-subtle">
               Languages

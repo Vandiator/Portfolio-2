@@ -56,7 +56,7 @@ export function Navbar() {
         </a>
 
         <nav aria-label="Primary" className="hidden md:block">
-          <ul className="flex items-center gap-1 rounded-full border border-border/60 bg-bg-elevated/40 px-2 py-1.5 backdrop-blur">
+          <ul className="flex items-center gap-1 rounded-full glass px-2 py-1.5">
             {links.map((link) => (
               <li key={link.href}>
                 <a

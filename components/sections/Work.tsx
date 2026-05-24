@@ -33,13 +33,13 @@ export function Work() {
             <p className="font-mono text-xs uppercase tracking-[0.25em] text-fg-subtle">
               02 — Selected work
             </p>
-            <h2 className="mt-3 text-balance text-3xl font-medium md:text-5xl">
+            <h2 className="mt-3 text-balance text-2xl font-medium sm:text-3xl md:text-5xl">
               Projects, in chapters of{" "}
               <span className="text-display italic text-accent">care</span>.
             </h2>
           </div>
 
-          <div className="flex flex-wrap gap-1 rounded-full border border-border/60 bg-bg-elevated/40 p-1 backdrop-blur">
+          <div className="flex flex-wrap gap-1 rounded-full glass p-1">
             {categories.map((c) => {
               const isActive = active === c;
               return (
@@ -79,7 +79,7 @@ export function Work() {
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.5, delay: i * 0.05 }}
                 className={cn(
-                  "group relative overflow-hidden rounded-3xl border border-border/60 bg-bg-elevated/30 p-6 backdrop-blur transition-colors hover:border-accent/40",
+                  "group relative overflow-hidden rounded-3xl glass glass-hover p-6 transition-colors",
                   p.featured && "md:col-span-2"
                 )}
               >

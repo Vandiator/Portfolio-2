@@ -27,17 +27,17 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[100svh] items-center overflow-hidden pt-28"
+      className="relative flex min-h-[100svh] items-center overflow-hidden pb-12 pt-24 md:pt-28"
     >
       <div className="container-page relative">
-        <div className="grid items-center gap-12 md:grid-cols-12">
+        <div className="grid items-center gap-10 md:grid-cols-12 md:gap-12">
           {/* LEFT — copy */}
           <div className="md:col-span-7">
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: heroDelay - 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-bg-elevated/40 px-3 py-1 text-xs text-fg-muted backdrop-blur"
+              className="inline-flex items-center gap-2 rounded-full glass px-3 py-1 text-xs text-fg-muted"
             >
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent/60" />
@@ -46,7 +46,7 @@ export function Hero() {
               <span className="font-mono tracking-wider">{profile.availability}</span>
             </motion.div>
 
-            <h1 className="mt-6 text-balance text-5xl font-medium leading-[1.02] tracking-tight md:text-7xl lg:text-[5.5rem]">
+            <h1 className="mt-6 text-balance text-[2.5rem] font-medium leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5rem]">
               {w("I build software")}
               <br />
               {w("with the", heroDelay + 0.18)}{" "}
@@ -93,7 +93,7 @@ export function Hero() {
               </a>
               <a
                 href="#contact"
-                className="group inline-flex items-center gap-2 rounded-full border border-border bg-bg-elevated/60 px-5 py-3 text-sm font-medium text-fg backdrop-blur transition-colors hover:bg-bg-elevated"
+                className="group inline-flex items-center gap-2 rounded-full glass glass-hover px-5 py-3 text-sm font-medium text-fg transition-colors"
                 data-cursor-text="say hi"
               >
                 Get in touch

@@ -28,7 +28,7 @@ export function Contact() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-3 text-balance text-4xl font-medium leading-[1.05] tracking-tight md:text-7xl"
+              className="mt-3 text-balance text-4xl font-medium leading-[1.05] tracking-tight sm:text-5xl md:text-6xl"
             >
               Let&apos;s build something{" "}
               <span className="text-display italic text-accent">
@@ -57,7 +57,7 @@ export function Contact() {
               </a>
               <button
                 onClick={copyEmail}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-bg-elevated/60 px-5 py-3 text-sm font-medium text-fg backdrop-blur transition-colors hover:bg-bg-elevated"
+                className="inline-flex items-center justify-center gap-2 rounded-full glass glass-hover px-5 py-3 text-sm font-medium text-fg transition-colors"
                 data-cursor-text={copied ? "copied!" : "copy"}
               >
                 <Copy size={14} />
@@ -99,7 +99,7 @@ export function Contact() {
                     href={row.href}
                     target={row.href.startsWith("http") ? "_blank" : undefined}
                     rel="noopener"
-                    className="group flex items-center justify-between rounded-2xl border border-border/60 bg-bg-elevated/30 px-5 py-4 transition-colors hover:border-accent/40 hover:bg-bg-elevated/60"
+                    className="group flex items-center justify-between rounded-2xl glass glass-hover px-5 py-4 transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <div className="grid h-9 w-9 place-items-center rounded-lg bg-accent/10 text-accent transition-colors group-hover:bg-accent group-hover:text-accent-fg">

@@ -51,7 +51,7 @@ export function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="text-balance text-3xl font-medium leading-tight md:text-5xl"
+              className="text-balance text-2xl font-medium leading-tight sm:text-3xl md:text-5xl"
             >
               An ML undergrad who treats every interface like a
               <span className="text-display italic text-accent"> frame</span> —
@@ -94,7 +94,7 @@ export function About() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.6, delay: 0.1 + i * 0.08 }}
-                  className="group rounded-2xl border border-border/60 bg-bg-elevated/30 p-5 transition-colors hover:border-accent/40 hover:bg-bg-elevated/60"
+                  className="group rounded-2xl glass glass-hover p-5 transition-colors"
                 >
                   <div className="flex items-start gap-4">
                     <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent transition-colors group-hover:bg-accent group-hover:text-accent-fg">
@@ -130,7 +130,7 @@ export function About() {
                 show: { opacity: 1, y: 0 },
               }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="rounded-2xl border border-border/60 bg-bg-elevated/40 p-5 backdrop-blur"
+              className="rounded-2xl glass p-5"
             >
               <p className="text-display text-3xl font-normal italic md:text-4xl">
                 <span className="text-accent">{s.n}</span>
