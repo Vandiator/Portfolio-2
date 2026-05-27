@@ -12,10 +12,13 @@ import { useEffect, useRef } from "react";
  *     and the nearest stars flare brighter
  *   - Honors prefers-reduced-motion (no drift, no twinkle, lines still draw)
  *
- * Colour:
- *   - Reads --star-rgb at runtime from the host element so dark/light
- *     themes can pick contrasting colours without re-mounting the canvas.
- *     Dark mode: warm white. Light mode: deep navy blue.
+ * Why no scroll parallax:
+ *   The canvas is position:fixed so it's already pinned to the viewport.
+ *   Adding a JS-driven scrollY offset on a fixed-position layer fights
+ *   against native browser scroll — the JS scroll event fires AFTER the
+ *   compositor has already painted the new frame, so stars always lag a
+ *   frame behind the content. Native drift + twinkle is smoother and
+ *   reads as "ambient cosmos" rather than "scroll-reactive layer".
  */
 export function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -89,7 +92,6 @@ export function ParticleField() {
 
     let mx = -10000;
     let my = -10000;
-    let scrollY = 0;
     const onMove = (e: MouseEvent) => {
       mx = e.clientX;
       my = e.clientY;
@@ -98,13 +100,9 @@ export function ParticleField() {
       mx = -10000;
       my = -10000;
     };
-    const onScroll = () => {
-      scrollY = window.scrollY;
-    };
 
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseout", onLeave);
-    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", resize);
 
     function getStarRgb(): string {
@@ -127,16 +125,6 @@ export function ParticleField() {
           s.tw += s.tws;
         }
 
-        // Parallax: brighter (closer) tiers move more with mouse + scroll.
-        // tier 0 (faint, distant) drifts ~6px, tier 2 (bright, near) drifts ~18px.
-        const depth = (s.tier + 1) * 6;
-        const px = s.x - scrollY * 0.04 * (s.tier + 1);
-        const py = s.y - scrollY * 0.12 * (s.tier + 1);
-        // Wrap vertically so stars never disappear after long scroll
-        const wrappedY = ((py % H) + H) % H;
-        const renderX = px;
-        const renderY = wrappedY;
-
         // Twinkle: 0.65–1.0 multiplier on alpha for non-faint tiers.
         const twinkle =
           s.tier === 0
@@ -146,10 +134,9 @@ export function ParticleField() {
         const baseAlpha =
           s.tier === 0 ? 0.45 : s.tier === 1 ? 0.7 : 0.95;
 
-        // Distance to cursor (against rendered position so cursor lines
-        // hit the visible star, not the unparallaxed one)
-        const dx = mx - renderX;
-        const dy = my - renderY;
+        // Distance to cursor
+        const dx = mx - s.x;
+        const dy = my - s.y;
         const d = Math.sqrt(dx * dx + dy * dy);
         const near = d < LINK_DIST;
         const t = near ? 1 - d / LINK_DIST : 0;
@@ -158,11 +145,11 @@ export function ParticleField() {
         if (s.tier === 2 || near) {
           const haloR = s.r * (s.tier === 2 ? 6 : 4) * (1 + t * 0.5);
           const halo = ctx!.createRadialGradient(
-            renderX,
-            renderY,
+            s.x,
+            s.y,
             0,
-            renderX,
-            renderY,
+            s.x,
+            s.y,
             haloR
           );
           const haloAlpha = (s.tier === 2 ? 0.18 : 0.08) * twinkle + t * 0.25;
@@ -170,7 +157,7 @@ export function ParticleField() {
           halo.addColorStop(1, `rgba(${rgb}, 0)`);
           ctx!.fillStyle = halo;
           ctx!.beginPath();
-          ctx!.arc(renderX, renderY, haloR, 0, Math.PI * 2);
+          ctx!.arc(s.x, s.y, haloR, 0, Math.PI * 2);
           ctx!.fill();
         }
 
@@ -178,7 +165,7 @@ export function ParticleField() {
         const bodyAlpha = baseAlpha * twinkle + t * 0.4;
         ctx!.fillStyle = `rgba(${rgb}, ${Math.min(1, bodyAlpha)})`;
         ctx!.beginPath();
-        ctx!.arc(renderX, renderY, s.r * (1 + t * 0.6), 0, Math.PI * 2);
+        ctx!.arc(s.x, s.y, s.r * (1 + t * 0.6), 0, Math.PI * 2);
         ctx!.fill();
 
         // 3) Constellation line to cursor
@@ -186,7 +173,7 @@ export function ParticleField() {
           ctx!.strokeStyle = `rgba(${rgb}, ${t * 0.45})`;
           ctx!.lineWidth = 1;
           ctx!.beginPath();
-          ctx!.moveTo(renderX, renderY);
+          ctx!.moveTo(s.x, s.y);
           ctx!.lineTo(mx, my);
           ctx!.stroke();
         }
@@ -201,7 +188,6 @@ export function ParticleField() {
       cancelAnimationFrame(raf);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseout", onLeave);
-      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", resize);
     };
   }, []);
