@@ -35,7 +35,7 @@ export function Work() {
             </p>
             <h2 className="mt-3 text-balance text-2xl font-medium sm:text-3xl md:text-5xl">
               Projects, in chapters of{" "}
-              <span className="text-display italic text-accent">care</span>.
+              <span className="text-display accent-text">care</span>.
             </h2>
           </div>
 

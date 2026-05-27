@@ -14,7 +14,7 @@ export function Skills() {
             </p>
             <h2 className="mt-3 text-balance text-2xl font-medium sm:text-3xl md:text-5xl">
               Things I reach for{" "}
-              <span className="text-display italic text-accent">often</span>.
+              <span className="text-display accent-text">often</span>.
             </h2>
           </div>
           <p className="max-w-md text-sm text-fg-muted">

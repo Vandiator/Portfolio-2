@@ -46,9 +46,7 @@ export function Navbar() {
           className="group inline-flex items-center gap-2"
           data-cursor-text="home"
         >
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-fg text-bg font-mono text-sm font-bold transition-transform group-hover:rotate-12">
-            V
-          </span>
+          <span className="logo-mark transition-transform group-hover:rotate-[20deg]" />
           <span className="hidden flex-col leading-tight sm:flex">
             <span className="text-sm font-medium">{profile.shortName}</span>
             <span className="font-mono text-[10px] uppercase tracking-widest text-fg-subtle">

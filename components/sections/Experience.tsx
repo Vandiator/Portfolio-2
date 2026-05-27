@@ -12,7 +12,7 @@ export function Experience() {
         </p>
         <h2 className="mt-3 text-balance text-2xl font-medium sm:text-3xl md:text-5xl">
           Where I&apos;ve been{" "}
-          <span className="text-display italic text-accent">building</span>.
+          <span className="text-display accent-text">building</span>.
         </h2>
 
         <div className="relative mt-14">

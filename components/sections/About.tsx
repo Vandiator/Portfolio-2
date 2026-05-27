@@ -54,7 +54,7 @@ export function About() {
               className="text-balance text-2xl font-medium leading-tight sm:text-3xl md:text-5xl"
             >
               An ML undergrad who treats every interface like a
-              <span className="text-display italic text-accent"> frame</span> —
+              <span className="text-display accent-text"> frame</span> —
               composed, intentional, and quiet enough to disappear into the work.
             </motion.h2>
 

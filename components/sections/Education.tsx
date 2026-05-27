@@ -17,7 +17,7 @@ export function Education() {
         </p>
         <h2 className="mt-3 text-balance text-2xl font-medium sm:text-3xl md:text-5xl">
           Always a{" "}
-          <span className="text-display italic text-accent">student</span> first.
+          <span className="text-display accent-text">student</span> first.
         </h2>
 
         <div className="mt-12 grid gap-6 md:grid-cols-2">

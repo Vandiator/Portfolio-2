@@ -5,23 +5,26 @@ import { useEffect, useRef } from "react";
 import { Typewriter } from "@/components/effects/Typewriter";
 
 /**
- * Cinematic avatar frame.
+ * Orbit-and-planet hero visual.
  *
- * Kept: corner brackets, soft halo, head silhouette, eyes that track cursor.
- * Removed: the "scene 01 · vandiator", "● rec", "24fps", "2026 — present"
- * filmstrip text — looked clever once, was noise on every visit.
+ * Three concentric rotating rings, each with a satellite dot, around a
+ * central planet with a Saturn-style tilted ring. The whole stage rotates
+ * subtly with the cursor (parallax tilt via Framer's spring).
  *
- * When you have a real photo, replace the SVG block with <Image />.
+ * Rationale: we don't have a real photo yet, and the previous SVG head
+ * silhouette read as "placeholder". An orbit visual reads as "deep space
+ * portfolio" without pretending to be a face.
+ *
+ * When you have a real portrait, swap the `.planet` div for an <Image />.
  */
 export function Avatar() {
   const ref = useRef<HTMLDivElement>(null);
   const px = useMotionValue(0);
   const py = useMotionValue(0);
-  const sx = useSpring(px, { stiffness: 80, damping: 14 });
-  const sy = useSpring(py, { stiffness: 80, damping: 14 });
-  const eyeX = useTransform(sx, [-1, 1], [-3, 3]);
-  const eyeY = useTransform(sy, [-1, 1], [-2, 2]);
+  const sx = useSpring(px, { stiffness: 60, damping: 18 });
+  const sy = useSpring(py, { stiffness: 60, damping: 18 });
   const tilt = useTransform(sx, [-1, 1], [-3, 3]);
+  const lift = useTransform(sy, [-1, 1], [-2, 2]);
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
@@ -39,85 +42,23 @@ export function Avatar() {
   }, [px, py]);
 
   return (
-    <motion.div
-      ref={ref}
-      style={{ rotate: tilt }}
-      className="relative mx-auto aspect-[4/5] w-full max-w-sm"
-    >
-      {/* Outer film border */}
-      <div className="absolute inset-0 rounded-[28px] border border-border/60 bg-bg-elevated/50" />
-      <div className="pointer-events-none absolute inset-2 rounded-[22px] border border-accent/30" />
+    <div className="relative mx-auto w-full max-w-[420px]">
+      <motion.div
+        ref={ref}
+        style={{ rotate: tilt, y: lift }}
+        className="orbit-stage relative aspect-square w-full"
+      >
+        {/* Three rotating rings — each with its own satellite dot */}
+        <div className="orbit-ring r1" />
+        <div className="orbit-ring r2" />
+        <div className="orbit-ring r3" />
 
-      {/* Corner brackets */}
-      {(["tl", "tr", "bl", "br"] as const).map((c) => (
-        <span
-          key={c}
-          aria-hidden
-          className={
-            "absolute h-5 w-5 border-accent " +
-            (c === "tl"
-              ? "left-3 top-3 border-l-2 border-t-2"
-              : c === "tr"
-                ? "right-3 top-3 border-r-2 border-t-2"
-                : c === "bl"
-                  ? "bottom-3 left-3 border-b-2 border-l-2"
-                  : "bottom-3 right-3 border-b-2 border-r-2")
-          }
-        />
-      ))}
-
-      {/* Inner "portrait" — abstract face that follows cursor */}
-      <div className="absolute inset-10 grid place-items-center">
-        <div className="relative h-full w-full">
-          {/* Soft halo */}
-          <div className="absolute inset-0 rounded-full bg-accent/10 blur-2xl" />
-          {/* Head silhouette */}
-          <svg
-            viewBox="0 0 200 240"
-            className="relative h-full w-full"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <defs>
-              <linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="hsl(var(--accent) / 0.35)" />
-                <stop offset="100%" stopColor="hsl(var(--accent) / 0)" />
-              </linearGradient>
-            </defs>
-            <path
-              d="M10 230 C 30 175, 75 165, 100 165 C 125 165, 170 175, 190 230 Z"
-              fill="url(#hg)"
-              opacity="0.55"
-            />
-            <circle
-              cx="100"
-              cy="100"
-              r="55"
-              stroke="hsl(var(--accent))"
-              strokeWidth="1"
-              opacity="0.6"
-            />
-            <circle cx="100" cy="100" r="52" fill="hsl(var(--bg-elevated))" />
-          </svg>
-
-          {/* Eyes that track cursor */}
-          <div className="absolute inset-0 grid place-items-center">
-            <div className="-mt-3 flex items-center gap-5">
-              <motion.span
-                style={{ x: eyeX, y: eyeY }}
-                className="h-1.5 w-1.5 rounded-full bg-fg shadow-[0_0_8px_hsl(var(--accent))]"
-              />
-              <motion.span
-                style={{ x: eyeX, y: eyeY }}
-                className="h-1.5 w-1.5 rounded-full bg-fg shadow-[0_0_8px_hsl(var(--accent))]"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+        {/* Central planet with Saturn-style tilted ring */}
+        <div className="planet" />
+      </motion.div>
 
       {/* Caption with typewriter role cycle */}
-      <div className="absolute -bottom-12 left-1/2 w-[120%] -translate-x-1/2 px-2 text-center sm:-bottom-8 sm:w-full">
+      <div className="mt-6 w-full text-center">
         <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-fg-subtle sm:tracking-[0.3em]">
           <span className="text-fg-subtle">vandiator</span>
           <span className="mx-1.5 text-accent">·</span>
@@ -132,6 +73,6 @@ export function Avatar() {
           />
         </p>
       </div>
-    </motion.div>
+    </div>
   );
 }

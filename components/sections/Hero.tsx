@@ -58,7 +58,7 @@ export function Hero() {
                   delay: heroDelay + 0.36,
                   ease: [0.16, 1, 0.3, 1],
                 }}
-                className="text-display italic text-accent"
+                className="text-display accent-text"
               >
                 patience
               </motion.span>{" "}

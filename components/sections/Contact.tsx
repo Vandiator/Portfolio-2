@@ -31,7 +31,7 @@ export function Contact() {
               className="mt-3 text-balance text-4xl font-medium leading-[1.05] tracking-tight sm:text-5xl md:text-6xl"
             >
               Let&apos;s build something{" "}
-              <span className="text-display italic text-accent">
+              <span className="text-display accent-text">
                 worth remembering
               </span>
               .
