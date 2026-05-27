@@ -3,7 +3,6 @@ import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { profile } from "@/content/profile";
 import { CustomCursor } from "@/components/effects/CustomCursor";
-import { SmoothScroll } from "@/components/effects/SmoothScroll";
 import { AuroraBackground } from "@/components/effects/AuroraBackground";
 import { ParticleField } from "@/components/effects/ParticleField";
 import { Splash } from "@/components/effects/Splash";
@@ -78,7 +77,6 @@ export default function RootLayout({
         <AuroraBackground />
         <ParticleField />
         <Splash />
-        <SmoothScroll />
         <CustomCursor />
         <Navbar />
         <main className="relative z-10">{children}</main>
