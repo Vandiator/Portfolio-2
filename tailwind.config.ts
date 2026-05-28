@@ -10,27 +10,27 @@ const config: Config = {
     extend: {
       colors: {
         bg: {
-          DEFAULT: "hsl(var(--bg) / <alpha-value>)",
-          subtle: "hsl(var(--bg-subtle) / <alpha-value>)",
-          elevated: "hsl(var(--bg-elevated) / <alpha-value>)",
+          DEFAULT: "oklch(var(--tw-bg) / <alpha-value>)",
+          subtle: "oklch(var(--tw-bg-subtle) / <alpha-value>)",
+          elevated: "oklch(var(--tw-bg-elevated) / <alpha-value>)",
         },
         fg: {
-          DEFAULT: "hsl(var(--fg) / <alpha-value>)",
-          muted: "hsl(var(--fg-muted) / <alpha-value>)",
-          subtle: "hsl(var(--fg-subtle) / <alpha-value>)",
+          DEFAULT: "oklch(var(--tw-fg) / <alpha-value>)",
+          muted: "oklch(var(--tw-fg-muted) / <alpha-value>)",
+          subtle: "oklch(var(--tw-fg-subtle) / <alpha-value>)",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent) / <alpha-value>)",
-          fg: "hsl(var(--accent-fg) / <alpha-value>)",
-          2: "hsl(var(--accent-2) / <alpha-value>)",
+          DEFAULT: "oklch(var(--tw-accent) / <alpha-value>)",
+          fg: "oklch(var(--tw-accent-fg) / <alpha-value>)",
+          2: "oklch(var(--tw-accent-2) / <alpha-value>)",
         },
-        cyan: "hsl(var(--accent-3) / <alpha-value>)",
-        border: "hsl(var(--border) / <alpha-value>)",
+        cyan: "oklch(var(--tw-accent-3) / <alpha-value>)",
+        border: "oklch(var(--tw-border) / <alpha-value>)",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui"],
-        body: ["var(--font-body)", "ui-sans-serif", "system-ui"],
-        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+        sans: ["var(--font-space-grotesk)", "ui-sans-serif", "system-ui"],
+        body: ["var(--font-inter)", "ui-sans-serif", "system-ui"],
+        mono: ["var(--font-jetbrains)", "ui-monospace", "monospace"],
       },
       animation: {
         "fade-in": "fade-in 0.6s ease-out",

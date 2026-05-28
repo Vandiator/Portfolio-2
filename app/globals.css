@@ -2,442 +2,218 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    /* Cosmic dark theme — purple/pink/cyan palette (oklch converted to HSL) */
-    --bg: 270 40% 4%;
-    --bg-subtle: 270 35% 9%;
-    --bg-elevated: 270 30% 11%;
-    --fg: 280 20% 97%;
-    --fg-muted: 280 10% 65%;
-    --fg-subtle: 280 12% 48%;
-    /* Accent: vivid pink/magenta */
-    --accent: 325 80% 60%;
-    --accent-soft: 325 75% 72%;
-    --accent-fg: 270 40% 4%;
-    /* Secondary accents for gradient text */
-    --accent-2: 280 70% 55%;
-    --accent-3: 210 70% 70%;
-    --border: 270 15% 24%;
-    /* Glow color (RGB for box-shadows) */
-    --glow: 255 100 220;
+/* ================================================================
+   HTML Reference Design System - oklch() color palette
+   ================================================================ */
+:root{
+  --bg:oklch(6% 0.04 290);--surface:oklch(13% 0.04 290);--fg:oklch(97% 0.008 290);
+  --muted:oklch(68% 0.035 290);--dim:oklch(50% 0.04 290);
+  --border:oklch(28% 0.04 290 / 0.6);--accent:oklch(68% 0.24 325);
+  --accent-2:oklch(62% 0.22 290);--cyan:oklch(78% 0.14 220);
+  --glow:255 100 220;
+  --fd: var(--font-space-grotesk, 'Space Grotesk'), system-ui, sans-serif;
+  --fb: var(--font-inter, 'Inter'), system-ui, sans-serif;
+  --fm: var(--font-jetbrains, 'JetBrains Mono'), ui-monospace, monospace;
 
-    --font-sans: var(--font-space-grotesk);
-    --font-body: var(--font-inter);
-    --font-mono: var(--font-jetbrains);
-  }
+  /* Tailwind oklch channel variables for alpha-value interpolation */
+  --tw-bg: 6% 0.04 290;
+  --tw-bg-subtle: 13% 0.04 290;
+  --tw-bg-elevated: 13% 0.04 290;
+  --tw-fg: 97% 0.008 290;
+  --tw-fg-muted: 68% 0.035 290;
+  --tw-fg-subtle: 50% 0.04 290;
+  --tw-accent: 68% 0.24 325;
+  --tw-accent-fg: 6% 0.04 290;
+  --tw-accent-2: 62% 0.22 290;
+  --tw-accent-3: 78% 0.14 220;
+  --tw-border: 28% 0.04 290;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--bg);color:var(--fg);font-family:var(--fb);line-height:1.6;overflow-x:hidden}
 
-  * {
-    @apply border-border;
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    @apply bg-bg text-fg antialiased;
-    font-family: var(--font-body);
-    font-feature-settings: "ss01", "cv11";
-  }
-
-  /* Hard 1-second cursor blink for the typewriter */
-  @keyframes caretBlink {
-    0%, 49%   { opacity: 1; }
-    50%, 100% { opacity: 0; }
-  }
-  .animate-caret {
-    animation: caretBlink 1s steps(1, end) infinite;
-  }
-
-  ::selection {
-    background: hsl(325 85% 65% / 0.3);
-    @apply text-fg;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    body.has-custom-cursor,
-    body.has-custom-cursor * {
-      cursor: none !important;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .orb,
-    .gradient-mesh,
-    .grain,
-    .vignette,
-    .animate-caret,
-    .animate-marquee,
-    [class*="animate-ping"],
-    [class*="animate-pulse"],
-    [class*="animate-shimmer"] {
-      animation: none !important;
-    }
-    html {
-      scroll-behavior: auto !important;
-    }
-  }
-
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-  ::-webkit-scrollbar-track {
-    background: hsl(var(--bg));
-  }
-  ::-webkit-scrollbar-thumb {
-    background: hsl(var(--border));
-    border-radius: 999px;
-    border: 2px solid hsl(var(--bg));
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--accent));
-  }
+/* ---- cosmos background ---- */
+.cosmos{position:fixed;inset:0;z-index:-2;overflow:hidden;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%,oklch(40% 0.16 325 / 0.35) 0%,transparent 60%),
+    radial-gradient(ellipse 70% 50% at 85% 30%,oklch(35% 0.14 290 / 0.4) 0%,transparent 65%),
+    radial-gradient(ellipse 90% 70% at 50% 100%,oklch(30% 0.12 290 / 0.5) 0%,transparent 70%),
+    var(--bg);
 }
 
-@layer components {
-  .container-page {
-    @apply mx-auto w-full max-w-[72rem] px-5 sm:px-6 md:px-8 lg:px-10;
-  }
+/* ---- wrap ---- */
+.wrap{position:relative;z-index:1}
 
-  .section {
-    @apply py-20 md:py-28 lg:py-32;
-  }
+/* ---- NAV ---- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.25rem 2rem;transition:background .3s,box-shadow .3s,padding .3s}
+.nav.scrolled{background:oklch(8% 0.03 290 / 0.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--border);padding-block:.75rem}
+.nav-inner{max-width:72rem;margin:auto;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:.5rem;font-family:var(--fd);font-weight:600;font-size:1.05rem;color:var(--fg);text-decoration:none}
+.logo-mark{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.875rem;transition:color .2s}
+.nav-links a:hover{color:var(--fg)}
+.nav-cta{padding:.55rem 1.4rem;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--fg);font-size:.8rem;font-weight:600;text-decoration:none;transition:transform .2s,box-shadow .2s}
+.nav-cta:hover{transform:scale(1.04);box-shadow:0 0 20px rgb(var(--glow) / .35)}
+.nav-toggle{display:none;background:none;border:1px solid var(--border);border-radius:.5rem;padding:.4rem .6rem;color:var(--fg);font-size:1.2rem;cursor:pointer}
 
-  .text-display {
-    font-family: var(--font-sans);
-    font-weight: 600;
-    @apply tracking-tight;
-  }
+/* ---- HERO ---- */
+.hero{min-height:100svh;display:flex;align-items:center;padding:7rem 2rem 4rem}
+.hero-grid{max-width:72rem;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--border);border-radius:999px;padding:.4rem 1rem;font-family:var(--fm);font-size:.7rem;color:var(--muted);margin-bottom:1.5rem}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+h1.hero-title{font-family:var(--fd);font-size:clamp(2.8rem,6vw,5.2rem);font-weight:600;line-height:1.05;letter-spacing:-.03em}
+.accent-text{background:linear-gradient(135deg,var(--accent),var(--accent-2),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic}
+.hero-sub{margin-top:1.2rem;font-size:1.05rem;color:var(--muted);max-width:38ch;line-height:1.7}
+.hero-cta{margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap}
+.btn{padding:.75rem 1.8rem;border-radius:999px;font-size:.85rem;font-weight:600;text-decoration:none;transition:transform .2s,box-shadow .2s}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--fg)}
+.btn-primary:hover{transform:scale(1.04);box-shadow:0 0 24px rgb(var(--glow) / .4)}
+.btn-ghost{border:1px solid var(--border);color:var(--fg)}
+.btn-ghost:hover{border-color:var(--accent);box-shadow:0 0 12px rgb(var(--glow) / .15)}
+.arrow{display:inline-block;transition:transform .2s}.btn:hover .arrow{transform:translateX(4px)}
 
-  .text-balance {
-    text-wrap: balance;
-  }
+/* ---- ORBIT ---- */
+.orbit-stage{position:relative;width:100%;aspect-ratio:1;max-width:420px;margin:auto}
+.orbit-ring{position:absolute;inset:0;border:1px solid oklch(50% 0.04 290 / 0.3);border-radius:50%;animation:spin 30s linear infinite}
+.orbit-ring.r2{inset:18%;border-color:oklch(50% 0.04 290 / 0.2);animation-duration:22s;animation-direction:reverse}
+.orbit-ring.r3{inset:36%;border-color:oklch(50% 0.04 290 / 0.15);animation-duration:16s}
+.orbit-ring::after{content:'';position:absolute;top:-4px;left:50%;width:8px;height:8px;border-radius:50%;background:var(--accent);transform:translateX(-50%);box-shadow:0 0 10px var(--accent)}
+.orbit-ring.r2::after{background:var(--accent-2);box-shadow:0 0 10px var(--accent-2);top:auto;bottom:-4px}
+.orbit-ring.r3::after{background:var(--cyan);box-shadow:0 0 10px var(--cyan);top:50%;left:-4px;transform:translateY(-50%)}
+.planet{position:absolute;inset:42%;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--accent),var(--accent-2),oklch(15% 0.05 290));box-shadow:0 0 60px oklch(68% 0.24 325 / 0.4),inset -6px -8px 20px oklch(10% 0.03 290 / 0.7);animation:float 6s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
-  /* GLASS — frosted-glass card surface.
-     NOTE: backdrop-filter is the #1 cause of scroll jank when stacked
-     with the gradient-mesh + grain layers. We use a slightly darker
-     opaque-ish bg + an inner highlight to fake glass cheaply. The nav
-     and a single hero pill keep real backdrop-blur (small, off-screen
-     during scroll) — but every card uses this cheap variant. */
-  .glass {
-    position: relative;
-    background: hsl(var(--bg-elevated) / 0.65);
-    border: 1px solid hsl(var(--fg) / 0.08);
-    box-shadow:
-      inset 0 1px 0 hsl(var(--fg) / 0.04),
-      0 12px 32px -18px hsl(var(--bg) / 0.6);
-    transition: border-color 0.3s ease, transform 0.25s ease,
-      box-shadow 0.3s ease;
-  }
-  .glass-hover {
-    will-change: transform;
-  }
-  .glass-hover:hover {
-    transform: translateY(-2px);
-    border-color: hsl(var(--accent) / 0.45);
-    box-shadow:
-      inset 0 1px 0 hsl(var(--fg) / 0.08),
-      0 0 0 1px hsl(var(--accent) / 0.18),
-      0 22px 44px -22px hsl(var(--accent) / 0.28);
-  }
+/* ---- SECTIONS ---- */
+section{padding:6rem 2rem}
+.section-head{max-width:72rem;margin:0 auto 3.5rem;text-align:center}
+.section-tag{font-family:var(--fm);font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--dim);margin-bottom:.75rem}
+h2{font-family:var(--fd);font-size:clamp(1.8rem,4vw,3rem);font-weight:600;letter-spacing:-.02em}
+.section-sub{margin-top:.75rem;color:var(--muted);max-width:48ch;margin-inline:auto}
 
-  /* Cosmos backdrop — static deep-space radial glows.
-     Matches the HTML reference: dark, contained, no animation.
-     Three fixed radial gradients with low opacity on a deep base. */
-  .gradient-mesh {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse 80% 60% at 20% 10%, hsl(320 65% 40% / 0.35) 0%, transparent 60%),
-      radial-gradient(ellipse 70% 50% at 85% 30%, hsl(270 60% 35% / 0.4) 0%, transparent 65%),
-      radial-gradient(ellipse 90% 70% at 50% 100%, hsl(290 55% 30% / 0.5) 0%, transparent 70%);
-  }
+/* ---- ABOUT ---- */
+.about-grid{max-width:72rem;margin:auto;display:grid;grid-template-columns:1fr 1.3fr;gap:4rem;align-items:start}
+.about-portrait{position:relative;aspect-ratio:4/5;border-radius:1.5rem;overflow:hidden;background:linear-gradient(135deg,oklch(15% 0.06 325),oklch(12% 0.05 290))}
+.badge{position:absolute;bottom:1rem;left:1rem;right:1rem;display:flex;align-items:center;gap:.75rem;background:oklch(10% 0.03 290 / 0.8);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:.75rem;padding:.75rem 1rem}
+.badge::before{content:'';width:2.2rem;height:2.2rem;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
+.about-body{font-size:1rem;color:var(--muted);line-height:1.8}
+.about-body p+p{margin-top:1.25rem}
+.about-body p:first-child{color:var(--fg);font-size:1.1rem}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem}
+.stat strong{display:block;font-family:var(--fd);font-size:1.8rem;color:var(--accent)}
+.stat span{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--dim)}
 
-  /* Accent gradient text — magenta → violet → cyan, italic.
-     Use on the highlighted word in section headings. */
-  .accent-text {
-    background: linear-gradient(
-      120deg,
-      hsl(var(--accent)) 0%,
-      hsl(var(--accent-2)) 50%,
-      hsl(var(--accent-3)) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    font-weight: 400;
-    font-style: italic;
-  }
+/* ---- PROJECTS ---- */
+.projects{max-width:72rem;margin:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem}
+.project{background:var(--surface);border:1px solid var(--border);border-radius:1.25rem;overflow:hidden;transition:transform .3s,box-shadow .3s}
+.project:hover{transform:translateY(-4px);box-shadow:0 12px 40px oklch(68% 0.24 325 / 0.12)}
+.project.featured{grid-column:1 / -1}
+.project-visual{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,oklch(12% 0.06 325),oklch(10% 0.05 290));display:grid;place-items:center}
+.project.featured .project-visual{aspect-ratio:21/9}
+.glyph{width:3.5rem;height:3.5rem;border-radius:50%;border:2px solid oklch(68% 0.24 325 / 0.3)}
+.tag{position:absolute;top:.75rem;left:.75rem;font-family:var(--fm);font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;padding:.3rem .7rem;border-radius:999px;background:oklch(68% 0.24 325 / 0.15);color:var(--accent)}
+.pnum{position:absolute;top:.75rem;right:.75rem;font-family:var(--fm);font-size:.65rem;color:var(--dim)}
+.project-body{padding:1.25rem 1.5rem 1.5rem}
+.project-body h3{font-family:var(--fd);font-size:1.15rem;font-weight:600;margin-bottom:.5rem}
+.project-body p{font-size:.88rem;color:var(--muted);line-height:1.6}
+.stack{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
+.stack span{font-family:var(--fm);font-size:.65rem;padding:.25rem .6rem;border-radius:999px;border:1px solid var(--border);color:var(--dim)}
 
-  /* Aurora orbs — small magenta/violet hero glows, subtler */
-  .orb {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(90px);
-    opacity: 0.3;
-    will-change: transform;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-    animation-timing-function: ease-in-out;
-  }
-  .orb-1 {
-    width: clamp(280px, 42vw, 640px);
-    height: clamp(280px, 42vw, 640px);
-    top: -8%;
-    left: -8%;
-    background: radial-gradient(
-      circle,
-      hsl(var(--accent) / 0.45) 0%,
-      hsl(var(--accent) / 0.15) 55%,
-      transparent 100%
-    );
-    animation: orbFloat1 14s infinite;
-  }
-  .orb-2 {
-    width: clamp(240px, 36vw, 540px);
-    height: clamp(240px, 36vw, 540px);
-    top: 30%;
-    right: -6%;
-    background: radial-gradient(
-      circle,
-      hsl(var(--accent-2) / 0.45) 0%,
-      hsl(var(--accent-2) / 0.15) 55%,
-      transparent 100%
-    );
-    animation: orbFloat2 18s infinite;
-    animation-delay: -2s;
-  }
-  .orb-3 {
-    width: clamp(200px, 30vw, 440px);
-    height: clamp(200px, 30vw, 440px);
-    bottom: -8%;
-    left: 30%;
-    background: radial-gradient(
-      circle,
-      hsl(var(--accent-3) / 0.3) 0%,
-      hsl(var(--accent-3) / 0.1) 55%,
-      transparent 100%
-    );
-    animation: orbFloat3 22s infinite;
-    animation-delay: -4s;
-  }
-  .orb-4 {
-    width: clamp(180px, 22vw, 360px);
-    height: clamp(180px, 22vw, 360px);
-    top: 12%;
-    left: 38%;
-    background: radial-gradient(
-      circle,
-      hsl(var(--accent) / 0.25) 0%,
-      transparent 70%
-    );
-    animation: orbFloat4 16s infinite;
-    animation-delay: -6s;
-  }
-  .vignette {
-    /* Removed — was adding a grey haze over the center that made the
-       page look washed out vs the HTML reference. */
-    display: none;
-  }
+/* ---- EXPERIENCE ---- */
+.timeline{max-width:72rem;margin:auto;position:relative;padding-left:2.5rem;border-left:1px solid var(--border)}
+.tl-item{position:relative;padding:1.5rem 0 2.5rem}
+.tl-item::before{content:'';position:absolute;left:-2.5rem;top:1.75rem;width:9px;height:9px;border-radius:50%;background:var(--accent);transform:translateX(-50%);box-shadow:0 0 8px var(--accent)}
+.tl-date{font-family:var(--fm);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em}
+.tl-title{font-family:var(--fd);font-size:1.2rem;font-weight:600;margin-top:.4rem}
+.tl-company{font-size:.85rem;color:var(--dim);margin-top:.2rem}
+.tl-desc{margin-top:.6rem;font-size:.9rem;color:var(--muted);line-height:1.7;max-width:56ch}
 
-  .grain {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    /* Grain removed — it was adding a visible grey film that made the
-       site look washed out compared to the HTML reference. */
-    display: none;
-  }
+/* ---- TESTIMONIALS ---- */
+.quotes{max-width:72rem;margin:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
+.quote{background:var(--surface);border:1px solid var(--border);border-radius:1.25rem;padding:2rem}
+.quote blockquote{font-size:.95rem;color:var(--muted);line-height:1.7;font-style:italic}
+.quote-by{display:flex;align-items:center;gap:.75rem;margin-top:1.25rem}
+.av{width:2.2rem;height:2.2rem;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
+.who{font-size:.85rem;font-weight:600;color:var(--fg)}
+.role{font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
 
-  @keyframes orbFloat1 {
-    0% { transform: translate3d(0, 0, 0) scale(1); }
-    33% { transform: translate3d(40px, -60px, 0) scale(1.08); }
-    66% { transform: translate3d(-30px, 40px, 0) scale(0.94); }
-    100% { transform: translate3d(20px, 20px, 0) scale(1.04); }
-  }
-  @keyframes orbFloat2 {
-    0% { transform: translate3d(0, 0, 0) scale(1); }
-    50% { transform: translate3d(-50px, 60px, 0) scale(1.1); }
-    100% { transform: translate3d(30px, -40px, 0) scale(0.92); }
-  }
-  @keyframes orbFloat3 {
-    0% { transform: translate3d(0, 0, 0) scale(1); }
-    50% { transform: translate3d(60px, -50px, 0) scale(1.12); }
-    100% { transform: translate3d(-40px, 30px, 0) scale(0.96); }
-  }
-  @keyframes orbFloat4 {
-    0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.3; }
-    50% { transform: translate3d(-40px, 40px, 0) scale(1.15); opacity: 0.55; }
-    100% { transform: translate3d(30px, -20px, 0) scale(0.9); opacity: 0.25; }
-  }
+/* ---- CTA ---- */
+.cta-card{max-width:72rem;margin:4rem auto;text-align:center;padding:4rem 2rem;border:1px solid var(--border);border-radius:1.5rem;background:var(--surface)}
+.cta-buttons{margin-top:2rem;display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
 
-  .shine-border {
-    position: relative;
-    isolation: isolate;
-  }
-  .shine-border::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(
-      120deg,
-      hsl(var(--accent) / 0.6),
-      transparent 30%,
-      transparent 70%,
-      hsl(var(--accent) / 0.4)
-    );
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-  }
+/* ---- REVEAL on scroll ---- */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
 
-  /* ============================================================
-     ORBIT STAGE — three rotating rings + central planet.
-     Replaces the previous SVG silhouette in the avatar slot.
-     ============================================================ */
-  .orbit-stage {
-    /* Soft halo behind the whole composition */
-    background: radial-gradient(
-      circle at 50% 50%,
-      hsl(var(--accent) / 0.12) 0%,
-      transparent 55%
-    );
-  }
-
-  .orbit-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid hsl(var(--fg) / 0.18);
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-    will-change: transform;
-  }
-  /* Each ring carries a satellite dot via ::before */
-  .orbit-ring::before {
-    content: "";
-    position: absolute;
-    border-radius: 50%;
-    box-shadow: 0 0 16px currentColor;
-  }
-
-  .orbit-ring.r1 {
-    inset: 0;
-    border-color: hsl(var(--accent-2) / 0.4);
-    color: hsl(var(--accent));
-    animation: orbitSpin 40s infinite;
-  }
-  .orbit-ring.r1::before {
-    width: 9px;
-    height: 9px;
-    background: hsl(var(--accent));
-    top: -4px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .orbit-ring.r2 {
-    inset: 12%;
-    border-color: hsl(var(--accent) / 0.4);
-    color: hsl(var(--accent-3));
-    animation: orbitSpin 28s infinite reverse;
-  }
-  .orbit-ring.r2::before {
-    width: 10px;
-    height: 10px;
-    background: hsl(var(--accent-3));
-    bottom: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .orbit-ring.r3 {
-    inset: 26%;
-    border-color: hsl(var(--accent-2) / 0.35);
-    color: hsl(var(--accent-2));
-    animation: orbitSpin 18s infinite;
-  }
-  .orbit-ring.r3::before {
-    width: 6px;
-    height: 6px;
-    background: hsl(var(--accent-2));
-    left: -3px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  @keyframes orbitSpin {
-    to { transform: rotate(360deg); }
-  }
-
-  /* Central planet — magenta-violet gradient sphere with Saturn ring */
-  .planet {
-    position: absolute;
-    inset: 38%;
-    border-radius: 50%;
-    background:
-      radial-gradient(
-        circle at 35% 30%,
-        hsl(var(--accent) / 0.95) 0%,
-        hsl(var(--accent-2) / 0.9) 40%,
-        hsl(260 30% 18%) 80%,
-        hsl(260 25% 8%) 100%
-      );
-    box-shadow:
-      0 0 60px hsl(var(--accent) / 0.4),
-      inset -8px -10px 24px hsl(260 30% 5% / 0.7);
-    animation: planetFloat 7s ease-in-out infinite;
-  }
-  .planet::before {
-    content: "";
-    position: absolute;
-    inset: -22%;
-    border-radius: 50%;
-    border: 2px solid hsl(var(--accent) / 0.45);
-    transform: rotate(-20deg) scaleX(1.6) scaleY(0.55);
-    box-shadow: 0 0 24px hsl(var(--accent) / 0.3);
-  }
-  @keyframes planetFloat {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-8px); }
-  }
-
-  /* ============================================================
-     LOGO MARK — Saturn-style ringed circle for the navbar.
-     Used by Navbar via the `.logo-mark` class.
-     ============================================================ */
-  .logo-mark {
-    position: relative;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle at 32% 30%,
-      hsl(var(--accent)) 0%,
-      hsl(var(--accent-2)) 55%,
-      hsl(260 30% 12%) 100%
-    );
-    box-shadow:
-      0 0 18px hsl(var(--accent) / 0.5),
-      inset -3px -3px 8px hsl(260 30% 6% / 0.7);
-  }
-  .logo-mark::after {
-    content: "";
-    position: absolute;
-    inset: -6px;
-    border-radius: 50%;
-    border: 1px solid hsl(var(--accent) / 0.4);
-    transform: rotate(-20deg) scaleX(1.4) scaleY(0.5);
-    pointer-events: none;
-  }
+/* ---- RESPONSIVE ---- */
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr;text-align:center}
+  .orbit-stage{max-width:280px;margin-top:2rem}
+  .hero-sub{margin-inline:auto}
+  .hero-cta{justify-content:center}
+  .about-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .nav-toggle{display:block}
+  .eyebrow{margin-inline:auto}
 }
+@media(max-width:600px){
+  .nav{padding:1rem}
+  section{padding:4rem 1.25rem}
+  .hero{padding:6rem 1.25rem 3rem}
+  h1.hero-title{font-size:clamp(2rem,8vw,3rem)}
+  .projects{grid-template-columns:1fr}
+  .quotes{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(3,1fr);gap:1rem}
+}
+
+/* ================================================================
+   Legacy utilities for Skills.tsx, Contact.tsx, Footer.tsx
+   ================================================================ */
+
+/* Container */
+.container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 72rem;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 640px) { .container-page { padding-inline: 1.5rem; } }
+@media (min-width: 768px) { .container-page { padding-inline: 2rem; } }
+@media (min-width: 1024px) { .container-page { padding-inline: 2.5rem; } }
+
+/* Glass card surface */
+.glass {
+  position: relative;
+  background: oklch(13% 0.04 290 / 0.65);
+  border: 1px solid oklch(97% 0.008 290 / 0.08);
+  box-shadow: inset 0 1px 0 oklch(97% 0.008 290 / 0.04), 0 12px 32px -18px oklch(6% 0.04 290 / 0.6);
+  transition: border-color 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
+}
+.glass-hover:hover {
+  transform: translateY(-2px);
+  border-color: oklch(68% 0.24 325 / 0.45);
+  box-shadow: inset 0 1px 0 oklch(97% 0.008 290 / 0.08), 0 0 0 1px oklch(68% 0.24 325 / 0.18), 0 22px 44px -22px oklch(68% 0.24 325 / 0.28);
+}
+
+/* Caret blink for Typewriter */
+@keyframes caretBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.animate-caret {
+  animation: caretBlink 1s steps(1, end) infinite;
+}
+
+/* Selection */
+::selection {
+  background: oklch(68% 0.24 325 / 0.3);
+  color: var(--fg);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }

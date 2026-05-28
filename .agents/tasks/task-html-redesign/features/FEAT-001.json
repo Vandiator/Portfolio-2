@@ -1,0 +1,20 @@
+{
+  "id": "FEAT-001",
+  "type": "refactor",
+  "description": "Replace globals.css with exact HTML reference CSS using oklch() colors, add all required classes (.cosmos, .wrap, .nav, .hero, .about-grid, .projects, .timeline, .quotes, .cta-card, .reveal, etc.), and update tailwind.config.ts to not conflict with the new CSS variables. Keep Tailwind imports but override :root with oklch variables.",
+  "status": "in_progress",
+  "steps": [
+    "1. Rewrite app/globals.css: Keep @tailwind base/components/utilities at top. Replace :root variables with the oklch()-based ones from the HTML reference (--bg, --surface, --fg, --muted, --dim, --border, --accent, --accent-2, --cyan, --glow, --fd, --fb, --fm). Add ALL CSS classes from the HTML file verbatim: *, html, body, .cosmos, .wrap, .nav, .nav.scrolled, .nav-inner, .logo, .logo-mark, .nav-links, .nav-cta, .nav-toggle, .hero, .hero-grid, .eyebrow, .dot, h1.hero-title, .accent-text, .hero-sub, .hero-cta, .btn, .btn-primary, .btn-ghost, .arrow, .orbit-stage, .orbit-ring (r1/r2/r3), .planet, section, .section-head, .section-tag, h2, .section-sub, .about-grid, .about-portrait, .badge, .about-body, .stats, .stat, .projects grid, .project, .project.featured, .project-visual, .glyph, .tag, .pnum, .project-body, .stack, .timeline, .tl-item, .tl-date, .tl-title, .tl-company, .tl-desc, .quotes, .quote, .quote-by, .av, .who, .role, .cta-card, .cta-buttons, .reveal, .reveal.in, @keyframes pulse/spin/float, all responsive @media breakpoints. Keep the existing .animate-caret keyframe and the ::selection styles. Also keep the existing .glass, .glass-hover, .container-page, .section classes so Skills/Contact/Footer still work (they use Tailwind utilities and these classes).",
+    "2. Update tailwind.config.ts: Keep the existing Tailwind color config (using hsl vars) since Skills.tsx, Contact.tsx, and Footer.tsx use Tailwind utilities like bg-bg, text-fg, text-accent etc. The old HSL :root variables can be kept in a separate block or the components can rely on the oklch colors through Tailwind's arbitrary value syntax. The simplest approach: keep the HSL variable block as a fallback inside a .legacy-colors class or just map the Tailwind colors to use the oklch values directly via CSS. Actually, the cleanest approach is to keep the Tailwind color definitions but update the :root HSL values to approximate the oklch values (since Skills/Contact/Footer reference them via hsl(var(--bg)) etc). But the new HTML CSS classes will use oklch directly.",
+    "3. Ensure the existing components (Skills, Contact, Footer) still render properly - they use Tailwind utilities like bg-bg-subtle, text-fg-muted, text-accent, border-border, glass, container-page, section. These must continue to work alongside the new HTML CSS."
+  ],
+  "acceptance_criteria": [
+    "globals.css contains all oklch() CSS variables and all HTML reference classes",
+    "The .cosmos, .nav, .hero, .about-grid, .projects, .timeline, .quotes, .reveal classes are all present",
+    "Existing Tailwind utility classes (bg-bg, text-fg, etc.) still resolve for Skills/Contact/Footer",
+    "npx next build succeeds without errors"
+  ],
+  "verification": ["npx next build"],
+  "blocked_reason": null,
+  "findings": ""
+}
