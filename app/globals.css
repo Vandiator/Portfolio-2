@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    /* Cosmic dark theme — purple/magenta accent on deep space blue */
-    --bg: 260 25% 6%;
-    --bg-subtle: 260 22% 8%;
-    --bg-elevated: 260 20% 11%;
-    --fg: 280 8% 96%;
-    --fg-muted: 280 6% 70%;
-    --fg-subtle: 280 5% 50%;
-    /* Accent: vivid magenta (matches the orbit/cosmos palette) */
-    --accent: 320 85% 65%;
-    --accent-soft: 320 80% 70%;
-    --accent-fg: 260 25% 6%;
-    /* Secondary accent for gradient text and ring stops */
-    --accent-2: 280 70% 60%;   /* deep violet */
-    --accent-3: 220 80% 70%;   /* cyan-blue */
-    --border: 260 15% 20%;
+    /* Cosmic dark theme — purple/pink/cyan palette */
+    --bg: 270 40% 6%;
+    --bg-subtle: 270 35% 9%;
+    --bg-elevated: 270 30% 13%;
+    --fg: 280 20% 97%;
+    --fg-muted: 280 10% 68%;
+    --fg-subtle: 280 12% 50%;
+    /* Accent: vivid pink/magenta */
+    --accent: 325 85% 65%;
+    --accent-soft: 325 75% 72%;
+    --accent-fg: 270 40% 6%;
+    /* Secondary accents for gradient text */
+    --accent-2: 280 70% 58%;
+    --accent-3: 210 80% 72%;
+    --border: 270 20% 22%;
 
-    --font-sans: var(--font-geist-sans);
-    --font-mono: var(--font-geist-mono);
-    --font-display: var(--font-instrument);
+    --font-sans: var(--font-space-grotesk);
+    --font-body: var(--font-inter);
+    --font-mono: var(--font-jetbrains);
   }
 
   * {
@@ -34,7 +34,8 @@
   }
 
   body {
-    @apply bg-bg text-fg font-sans antialiased;
+    @apply bg-bg text-fg antialiased;
+    font-family: var(--font-body);
     font-feature-settings: "ss01", "cv11";
   }
 
@@ -48,7 +49,8 @@
   }
 
   ::selection {
-    @apply bg-accent/30 text-fg;
+    background: hsl(325 85% 65% / 0.3);
+    @apply text-fg;
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -102,7 +104,9 @@
   }
 
   .text-display {
-    @apply font-display tracking-tight;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    @apply tracking-tight;
   }
 
   .text-balance {
@@ -162,7 +166,6 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    font-style: italic;
     font-weight: 400;
   }
 

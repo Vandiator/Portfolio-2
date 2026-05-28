@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { profile } from "@/content/profile";
 import { CustomCursor } from "@/components/effects/CustomCursor";
@@ -9,23 +9,24 @@ import { Splash } from "@/components/effects/Splash";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
   display: "swap",
 });
 
-const instrument = Instrument_Serif({
-  variable: "--font-instrument",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains",
   subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -72,7 +73,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${instrument.variable} relative`}
+        className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} relative`}
       >
         <AuroraBackground />
         <ParticleField />

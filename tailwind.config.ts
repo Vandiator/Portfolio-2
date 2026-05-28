@@ -22,13 +22,15 @@ const config: Config = {
         accent: {
           DEFAULT: "hsl(var(--accent) / <alpha-value>)",
           fg: "hsl(var(--accent-fg) / <alpha-value>)",
+          2: "hsl(var(--accent-2) / <alpha-value>)",
         },
+        cyan: "hsl(var(--accent-3) / <alpha-value>)",
         border: "hsl(var(--border) / <alpha-value>)",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui"],
+        body: ["var(--font-body)", "ui-sans-serif", "system-ui"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
-        display: ["var(--font-display)", "ui-serif", "Georgia"],
       },
       animation: {
         "fade-in": "fade-in 0.6s ease-out",
