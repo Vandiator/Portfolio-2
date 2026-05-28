@@ -1,14 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const links = [
   { href: "#about", label: "About" },
   { href: "#work", label: "Projects" },
-  { href: "#skills", label: "Skills" },
   { href: "#experience", label: "Experience" },
   { href: "#contact", label: "Contact" },
 ];
@@ -25,110 +21,52 @@ export function Navbar() {
   }, []);
 
   return (
-    <motion.header
-      initial={{ y: -32, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 1.4 }}
-      className={cn(
-        "fixed inset-x-0 top-0 z-40 transition-all duration-300",
-        scrolled
-          ? "border-b border-border/60 bg-bg/75 backdrop-blur-xl"
-          : "border-b border-transparent bg-transparent"
-      )}
-    >
-      <div className="container-page flex h-16 items-center justify-between">
-        {/* Left: logo-mark + name */}
-        <a
-          href="#top"
-          className="group inline-flex items-center gap-2"
-        >
-          <span className="logo-mark transition-transform group-hover:rotate-[20deg]" />
-          <span className="text-sm font-medium text-fg">
-            Vineet<span className="text-accent">.</span>
-          </span>
+    <nav className={`nav${scrolled ? " scrolled" : ""}`}>
+      <div className="nav-inner">
+        <a href="#top" className="logo">
+          <span className="logo-mark" />
+          Vineet<span style={{ color: "var(--accent)" }}>.</span>
         </a>
-
-        {/* Center: nav links */}
-        <nav aria-label="Primary" className="hidden md:block">
-          <ul className="flex items-center gap-6">
-            {links.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className="text-sm text-fg-muted transition-colors hover:text-white"
-                >
-                  {link.label}
+        <ul className="nav-links">
+          {links.map((l) => (
+            <li key={l.href}><a href={l.href}>{l.label}</a></li>
+          ))}
+        </ul>
+        <a href="#contact" className="nav-cta">
+          Let&apos;s talk <span className="arrow">&rarr;</span>
+        </a>
+        <button
+          className="nav-toggle"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle menu"
+        >
+          {mobileOpen ? "\u2715" : "\u2630"}
+        </button>
+      </div>
+      {mobileOpen && (
+        <div style={{
+          position: "absolute", top: "100%", left: 0, right: 0,
+          background: "oklch(8% 0.03 290 / 0.95)", backdropFilter: "blur(14px)",
+          padding: "1rem 2rem", borderTop: "1px solid var(--border)"
+        }}>
+          <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "1rem" }}>
+            {links.map((l) => (
+              <li key={l.href}>
+                <a href={l.href} onClick={() => setMobileOpen(false)}
+                   style={{ color: "var(--muted)", textDecoration: "none", fontSize: ".9rem" }}>
+                  {l.label}
                 </a>
               </li>
             ))}
+            <li>
+              <a href="#contact" className="nav-cta" onClick={() => setMobileOpen(false)}
+                 style={{ display: "inline-block" }}>
+                Let&apos;s talk &rarr;
+              </a>
+            </li>
           </ul>
-        </nav>
-
-        {/* Right: Let's talk CTA */}
-        <div className="hidden items-center md:flex">
-          <a
-            href="#contact"
-            className="rounded-full px-5 py-2 text-sm font-medium text-white transition-transform hover:scale-105"
-            style={{
-              background:
-                "linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent-2)))",
-              boxShadow: "0 0 20px rgba(var(--glow), 0.3)",
-            }}
-          >
-            Let&apos;s talk &rarr;
-          </a>
         </div>
-
-        {/* Mobile hamburger */}
-        <button
-          aria-label="Toggle menu"
-          aria-expanded={mobileOpen}
-          onClick={() => setMobileOpen((v) => !v)}
-          className="grid h-10 w-10 place-items-center rounded-full border border-border md:hidden"
-        >
-          {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-        </button>
-      </div>
-
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            className="border-t border-border/60 bg-bg/95 backdrop-blur-xl md:hidden"
-          >
-            <nav className="container-page py-4">
-              <ul className="flex flex-col gap-1">
-                {links.map((link) => (
-                  <li key={link.href}>
-                    <a
-                      href={link.href}
-                      onClick={() => setMobileOpen(false)}
-                      className="block rounded-lg px-3 py-3 text-base text-fg-muted transition-colors hover:bg-fg/5 hover:text-fg"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-                <li className="mt-2">
-                  <a
-                    href="#contact"
-                    onClick={() => setMobileOpen(false)}
-                    className="block rounded-lg px-3 py-3 text-center text-base font-medium text-white"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent-2)))",
-                    }}
-                  >
-                    Let&apos;s talk &rarr;
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.header>
+      )}
+    </nav>
   );
 }

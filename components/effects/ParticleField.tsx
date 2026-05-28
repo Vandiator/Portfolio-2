@@ -157,7 +157,8 @@ export function ParticleField() {
     <canvas
       ref={canvasRef}
       aria-hidden
-      className="pointer-events-none fixed inset-0 -z-[5]"
+      className="pointer-events-none fixed inset-0"
+      style={{ zIndex: -1 }}
     />
   );
 }

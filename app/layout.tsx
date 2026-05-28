@@ -2,10 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { profile } from "@/content/profile";
-import { CustomCursor } from "@/components/effects/CustomCursor";
 import { AuroraBackground } from "@/components/effects/AuroraBackground";
 import { ParticleField } from "@/components/effects/ParticleField";
-import { Splash } from "@/components/effects/Splash";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
@@ -72,15 +70,13 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="dark">
-      <body
-        className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} relative`}
-      >
+      <body className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
         <AuroraBackground />
         <ParticleField />
-        <Splash />
-        <CustomCursor />
         <Navbar />
-        <main className="relative z-10">{children}</main>
+        <div className="wrap">
+          {children}
+        </div>
         <Footer />
       </body>
     </html>

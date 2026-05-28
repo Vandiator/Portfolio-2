@@ -1,0 +1,32 @@
+{
+  "id": "FEAT-002",
+  "type": "refactor",
+  "description": "Rewrite all modifiable components (Navbar, Hero, About, Work, Experience, Testimonials, AuroraBackground, ParticleField) and layout/page to use the exact HTML structure and class names from the reference file. Use the content data from content/ files.",
+  "status": "in_progress",
+  "steps": [
+    "1. Rewrite app/layout.tsx: Keep fonts (Space Grotesk, Inter, JetBrains Mono), metadata, viewport. Remove Splash and CustomCursor imports/usage. Keep AuroraBackground and ParticleField. Remove Navbar and Footer from layout (they'll be in page.tsx or kept in layout if needed by Skills/Contact/Footer). Actually keep Navbar in layout but it will be rewritten. Keep Footer in layout. The body should use font variables. Add the 'wrap' class div structure from the HTML reference.",
+    "2. Rewrite components/effects/AuroraBackground.tsx: Render a <div className='cosmos' /> that is fixed fullscreen background matching the HTML .cosmos class (fixed inset-0 with radial gradients defined in CSS).",
+    "3. Rewrite components/effects/ParticleField.tsx: Use the EXACT starfield JS from the HTML reference - 220 stars, scroll parallax (scrollY * star.speed * 0.15), mouse parallax ((mx-0.5)*30 for x, (my-0.5)*20 for y), warm pink-white radial gradient rendering (rgb 255,230,255), size distribution (65% tiny 0.3-0.8r, 25% medium 0.7-1.3r, 10% large 1.2-2r), glow radius = r*5. The canvas should be fixed fullscreen with z-index between cosmos and content.",
+    "4. Rewrite components/Navbar.tsx: Use the HTML nav structure exactly - <nav class='nav'><div class='nav-inner'> with .logo (containing .logo-mark span + 'Vineet' text), .nav-links (About, Projects, Experience, Contact links), .nav-cta button ('Let's talk' with arrow). Add scroll detection to add 'scrolled' class. Include mobile toggle with .nav-toggle class.",
+    "5. Rewrite components/sections/Hero.tsx: Use exact HTML hero structure - <section class='hero' id='top'><div class='hero-grid'> with left column containing .eyebrow (with .dot span + text), h1.hero-title with .accent-text span, .hero-sub paragraph, typewriter div, .hero-cta div with .btn.btn-primary and .btn.btn-ghost buttons. Right column: .orbit-stage with three .orbit-ring divs (r1/r2/r3) and .planet. Import and use the existing Typewriter component.",
+    "6. Rewrite components/sections/About.tsx: Use exact HTML about structure - section with .section-head (.section-tag + h2 + .section-sub), .about-grid with .about-portrait (gradient placeholder + .badge) and .about-body (paragraphs from profile.bio + .stats grid with .stat items showing 3+/20+/infinity values).",
+    "7. Rewrite components/sections/Work.tsx: Use exact HTML projects structure - section with .section-head, .projects grid containing .project articles (with .project.featured for first item). Each project has .project-visual (with .glyph circle, .tag span, .pnum number), .project-body (h3 title, p description, .stack div with tech spans). Use data from content/projects.ts.",
+    "8. Rewrite components/sections/Experience.tsx: Use exact HTML timeline structure - section with .section-head, .timeline div containing .tl-item articles. Each item has .tl-date, .tl-title, .tl-company, .tl-desc. Use data from content/experience.ts.",
+    "9. Rewrite components/sections/Testimonials.tsx: Use exact HTML quotes structure - section with .section-head, .quotes grid containing .quote articles. Each quote has blockquote with italic text, .quote-by div with .av (gradient circle), .who span, .role span. Use data from content/testimonials.ts.",
+    "10. Update app/page.tsx: Render sections in order - Hero, About, Work, Skills (unchanged), Experience, Testimonials, Contact (unchanged). Wrap in appropriate container. Add scroll-reveal class 'reveal' to sections that need it (About, Work, Experience, Testimonials).",
+    "11. Add IntersectionObserver-based scroll reveal: Create a small client component or useEffect in page/layout that observes .reveal elements and adds .in class when they enter viewport (matching the HTML reference's reveal behavior)."
+  ],
+  "acceptance_criteria": [
+    "All rewritten components use the exact HTML class names from the reference (.nav, .hero, .hero-grid, .about-grid, .projects, .timeline, .quotes, etc.)",
+    "The Typewriter component is imported and used in Hero (not reimplemented)",
+    "Skills.tsx, Contact.tsx, Footer.tsx, and Typewriter.tsx are NOT modified",
+    "Content data from content/ files is used where appropriate",
+    "ParticleField renders 220 stars with scroll+mouse parallax and pink-white gradient glow",
+    "AuroraBackground renders just the .cosmos div",
+    "npx next build succeeds without errors",
+    "The scroll reveal (.reveal/.reveal.in) is implemented via IntersectionObserver"
+  ],
+  "verification": ["npx next build"],
+  "blocked_reason": null,
+  "findings": ""
+}
