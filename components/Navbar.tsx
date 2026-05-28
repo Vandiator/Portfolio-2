@@ -8,9 +8,10 @@ import { cn } from "@/lib/utils";
 
 const links = [
   { href: "#about", label: "About" },
-  { href: "#work", label: "Work" },
+  { href: "#work", label: "Projects" },
   { href: "#skills", label: "Skills" },
   { href: "#experience", label: "Experience" },
+  { href: "#testimonials", label: "Testimonials" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -32,8 +33,6 @@ export function Navbar() {
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 1.4 }}
       className={cn(
         "fixed inset-x-0 top-0 z-40 transition-all duration-300",
-        // Always keep a faint glass surface so the bar is readable
-        // against the colorful nebula. Bumps to fully opaque when scrolled.
         "border-b backdrop-blur-md",
         scrolled
           ? "border-border/60 bg-bg/75 backdrop-blur-xl"
@@ -41,27 +40,24 @@ export function Navbar() {
       )}
     >
       <div className="container-page flex h-16 items-center justify-between">
+        {/* Left: logo + name */}
         <a
           href="#top"
           className="group inline-flex items-center gap-2"
           data-cursor-text="home"
         >
           <span className="logo-mark transition-transform group-hover:rotate-[20deg]" />
-          <span className="hidden flex-col leading-tight sm:flex">
-            <span className="text-sm font-medium">{profile.shortName}</span>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-fg-subtle">
-              vandiator
-            </span>
-          </span>
+          <span className="text-sm font-medium">{profile.shortName}</span>
         </a>
 
+        {/* Center: nav links (not in a glass pill) */}
         <nav aria-label="Primary" className="hidden md:block">
-          <ul className="flex items-center gap-1 rounded-full glass px-2 py-1.5">
+          <ul className="flex items-center gap-6">
             {links.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className="rounded-full px-3 py-1.5 text-sm text-fg-muted transition-colors hover:bg-fg/10 hover:text-fg"
+                  className="text-sm text-fg-muted transition-colors hover:text-fg"
                 >
                   {link.label}
                 </a>
@@ -70,18 +66,17 @@ export function Navbar() {
           </ul>
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
+        {/* Right: Let's Talk button */}
+        <div className="hidden items-center md:flex">
           <a
-            href={profile.resumeUrl}
-            target="_blank"
-            rel="noopener"
-            className="rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-fg transition-transform hover:scale-105"
-            data-cursor-text="open"
+            href="#contact"
+            className="rounded-full border border-accent px-4 py-2 text-sm font-medium text-accent transition-colors hover:bg-accent hover:text-accent-fg"
           >
-            Resume
+            Let&apos;s Talk
           </a>
         </div>
 
+        {/* Mobile hamburger */}
         <button
           aria-label="Toggle menu"
           aria-expanded={mobileOpen}
@@ -115,12 +110,11 @@ export function Navbar() {
                 ))}
                 <li className="mt-2">
                   <a
-                    href={profile.resumeUrl}
-                    target="_blank"
-                    rel="noopener"
-                    className="block rounded-lg bg-accent px-3 py-3 text-center text-base font-medium text-accent-fg"
+                    href="#contact"
+                    onClick={() => setMobileOpen(false)}
+                    className="block rounded-lg border border-accent px-3 py-3 text-center text-base font-medium text-accent"
                   >
-                    Resume
+                    Let&apos;s Talk
                   </a>
                 </li>
               </ul>

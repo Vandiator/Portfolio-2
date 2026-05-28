@@ -1,0 +1,7 @@
+{
+  "task_id": "task-portfolio-redesign",
+  "task_description": "Redesign the portfolio website to match the provided HTML design file. Replace the amber/warm color scheme with purple/pink/cyan. Replace fonts with Space Grotesk + Inter + JetBrains Mono. Redesign Navbar, Hero, About, Projects, Experience sections and add Testimonials. Keep the typing animation in hero, footer, contact section, and skills section from the original.",
+  "status": "in_progress",
+  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003"],
+  "blocked_reason": null
+}

@@ -1,33 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Camera, Code2, Sparkles } from "lucide-react";
 import { profile } from "@/content/profile";
-import { interests } from "@/content/education";
-
-const traits = [
-  {
-    icon: Code2,
-    title: "Engineering",
-    body: "Frontend, ML pipelines, ERP automation, and the glue in between.",
-  },
-  {
-    icon: Sparkles,
-    title: "Design",
-    body: "Figma-first systems, accessibility, and details people feel before they notice.",
-  },
-  {
-    icon: Camera,
-    title: "Cinema",
-    body: "Photography and filmmaking are how I learned to compose anything — including software.",
-  },
-];
 
 const stats = [
-  { n: "200+", l: "Datasets cleaned & fed into ERP" },
-  { n: "30", l: "Days · Smart Campus boot camp" },
-  { n: "2", l: "Concurrent degrees (B.Tech + IIT-M BS)" },
-  { n: "5+", l: "Languages: Python, JS, Java, SQL, HTML/CSS" },
+  { n: "2+", l: "Years Experience" },
+  { n: "10+", l: "Projects Completed" },
+  { n: "5+", l: "Happy Clients" },
+  { n: "3+", l: "Awards Won" },
 ];
 
 export function About() {
@@ -39,26 +19,40 @@ export function About() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6 }}
-          className="font-mono text-xs uppercase tracking-[0.25em] text-fg-subtle"
+          className="font-mono text-sm text-fg-subtle"
         >
-          01 — About
+          // About Me
         </motion.p>
 
-        <div className="mt-6 grid gap-12 md:grid-cols-12">
-          <div className="md:col-span-7">
+        <div className="mt-8 grid gap-12 md:grid-cols-2">
+          {/* LEFT - portrait placeholder */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="flex items-center justify-center"
+          >
+            <div className="flex aspect-square w-full max-w-[360px] items-center justify-center rounded-2xl border-2 border-accent/30 bg-gradient-to-br from-bg-elevated to-bg-subtle">
+              <span className="text-4xl font-sans text-accent/40">VV</span>
+            </div>
+          </motion.div>
+
+          {/* RIGHT - text content */}
+          <div>
             <motion.h2
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="text-balance text-2xl font-medium leading-tight sm:text-3xl md:text-5xl"
+              className="text-balance text-2xl font-medium leading-tight sm:text-3xl md:text-4xl"
             >
-              An ML undergrad who treats every interface like a
-              <span className="text-display accent-text"> frame</span> —
-              composed, intentional, and quiet enough to disappear into the work.
+              Passionate about creating{" "}
+              <span className="accent-text">meaningful</span> digital
+              experiences
             </motion.h2>
 
-            <div className="mt-8 space-y-5 text-base text-fg-muted md:text-lg">
+            <div className="mt-6 space-y-4 text-base text-fg-muted">
               {profile.bio.map((p, i) => (
                 <motion.p
                   key={i}
@@ -66,81 +60,43 @@ export function About() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.6, delay: i * 0.1 }}
-                  className="text-balance"
                 >
                   {p}
                 </motion.p>
               ))}
             </div>
 
-            <div className="mt-10 flex flex-wrap gap-2">
-              {interests.map((i) => (
-                <span
-                  key={i}
-                  className="rounded-full border border-border/70 bg-bg-elevated/50 px-3 py-1 text-xs text-fg-muted"
+            {/* Stats grid */}
+            <motion.div
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-60px" }}
+              variants={{
+                hidden: {},
+                show: { transition: { staggerChildren: 0.08 } },
+              }}
+              className="mt-8 grid grid-cols-2 gap-4"
+            >
+              {stats.map((s) => (
+                <motion.div
+                  key={s.l}
+                  variants={{
+                    hidden: { opacity: 0, y: 12 },
+                    show: { opacity: 1, y: 0 },
+                  }}
+                  transition={{ duration: 0.5 }}
                 >
-                  {i}
-                </span>
+                  <p className="text-2xl font-sans font-semibold text-accent">
+                    {s.n}
+                  </p>
+                  <p className="text-xs uppercase tracking-wider text-fg-subtle">
+                    {s.l}
+                  </p>
+                </motion.div>
               ))}
-            </div>
-          </div>
-
-          <div className="md:col-span-5">
-            <ul className="space-y-3">
-              {traits.map((t, i) => (
-                <motion.li
-                  key={t.title}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 0.6, delay: 0.1 + i * 0.08 }}
-                  className="group rounded-2xl glass glass-hover p-5 transition-colors"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent transition-colors group-hover:bg-accent group-hover:text-accent-fg">
-                      <t.icon size={18} />
-                    </div>
-                    <div>
-                      <h3 className="font-medium">{t.title}</h3>
-                      <p className="mt-1 text-sm text-fg-muted">{t.body}</p>
-                    </div>
-                  </div>
-                </motion.li>
-              ))}
-            </ul>
+            </motion.div>
           </div>
         </div>
-
-        {/* Stats grid */}
-        <motion.ul
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={{
-            hidden: {},
-            show: { transition: { staggerChildren: 0.08 } },
-          }}
-          className="mt-16 grid grid-cols-2 gap-3 md:grid-cols-4"
-        >
-          {stats.map((s, i) => (
-            <motion.li
-              key={i}
-              variants={{
-                hidden: { opacity: 0, y: 16 },
-                show: { opacity: 1, y: 0 },
-              }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="rounded-2xl glass p-5"
-            >
-              <p className="text-display text-3xl font-normal italic md:text-4xl">
-                <span className="text-accent">{s.n}</span>
-              </p>
-              <p className="mt-2 text-xs uppercase tracking-widest text-fg-subtle">
-                {s.l}
-              </p>
-            </motion.li>
-          ))}
-        </motion.ul>
       </div>
     </section>
   );

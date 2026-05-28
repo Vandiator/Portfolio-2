@@ -3,22 +3,14 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Star field — space-themed background.
+ * Star field - space-themed background.
  *
  * Behaviour:
- *   - 140 stars in 3 size tiers (faint pinpricks → bright headliners)
+ *   - 100 stars in 3 size tiers (faint pinpricks to bright headliners)
  *   - Each star drifts slowly + has its own twinkle phase
- *   - Cursor within 220px → constellation lines connect cursor to stars,
- *     and the nearest stars flare brighter
- *   - Honors prefers-reduced-motion (no drift, no twinkle, lines still draw)
- *
- * Why no scroll parallax:
- *   The canvas is position:fixed so it's already pinned to the viewport.
- *   Adding a JS-driven scrollY offset on a fixed-position layer fights
- *   against native browser scroll — the JS scroll event fires AFTER the
- *   compositor has already painted the new frame, so stars always lag a
- *   frame behind the content. Native drift + twinkle is smoother and
- *   reads as "ambient cosmos" rather than "scroll-reactive layer".
+ *   - Cursor proximity creates a halo/flare on nearby stars
+ *   - Subtle mouse parallax shifts rendering position
+ *   - Honors prefers-reduced-motion (no drift, no twinkle)
  */
 export function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -36,33 +28,32 @@ export function ParticleField() {
     type Star = {
       x: number;
       y: number;
-      r: number;          // base radius
-      tier: 0 | 1 | 2;    // 0 = faint, 1 = mid, 2 = bright
+      r: number;
+      tier: 0 | 1 | 2;
       vx: number;
       vy: number;
-      tw: number;         // twinkle phase (radians)
-      tws: number;        // twinkle speed
+      tw: number;
+      tws: number;
     };
 
     let W = 0;
     let H = 0;
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
     const stars: Star[] = [];
-    const COUNT = 140;
-    const LINK_DIST = 220;
+    const COUNT = 100;
+    const PROX_DIST = 220;
 
     function spawn() {
       stars.length = 0;
       for (let i = 0; i < COUNT; i++) {
-        // Tier weights: 60% faint, 30% mid, 10% bright headliners
         const t = Math.random();
         const tier: Star["tier"] = t < 0.6 ? 0 : t < 0.9 ? 1 : 2;
         const baseR =
           tier === 0
-            ? 0.5 + Math.random() * 0.6
+            ? 0.4 + Math.random() * 0.5
             : tier === 1
-              ? 1.0 + Math.random() * 0.8
-              : 1.6 + Math.random() * 1.2;
+              ? 0.9 + Math.random() * 0.7
+              : 1.5 + Math.random() * 1.0;
 
         stars.push({
           x: Math.random() * W,
@@ -105,16 +96,16 @@ export function ParticleField() {
     window.addEventListener("mouseout", onLeave);
     window.addEventListener("resize", resize);
 
-    function getStarRgb(): string {
-      // Single dark theme — warm white starlight always
-      return "245, 240, 230";
-    }
+    const rgb = "200, 210, 255";
 
     let raf = 0;
 
     function frame() {
       ctx!.clearRect(0, 0, W, H);
-      const rgb = getStarRgb();
+
+      // Subtle parallax offset based on mouse position
+      const px = mx > -9000 ? (mx - W / 2) * 0.02 : 0;
+      const py = my > -9000 ? (my - H / 2) * 0.02 : 0;
 
       for (const s of stars) {
         if (!reduceMotion) {
@@ -125,7 +116,6 @@ export function ParticleField() {
           s.tw += s.tws;
         }
 
-        // Twinkle: 0.65–1.0 multiplier on alpha for non-faint tiers.
         const twinkle =
           s.tier === 0
             ? 1
@@ -134,22 +124,26 @@ export function ParticleField() {
         const baseAlpha =
           s.tier === 0 ? 0.45 : s.tier === 1 ? 0.7 : 0.95;
 
-        // Distance to cursor
+        // Apply parallax offset to draw position
+        const drawX = s.x + px;
+        const drawY = s.y + py;
+
+        // Distance to cursor (use actual star position for proximity check)
         const dx = mx - s.x;
         const dy = my - s.y;
         const d = Math.sqrt(dx * dx + dy * dy);
-        const near = d < LINK_DIST;
-        const t = near ? 1 - d / LINK_DIST : 0;
+        const near = d < PROX_DIST;
+        const t = near ? 1 - d / PROX_DIST : 0;
 
-        // 1) Soft halo for bright stars (and any star inside cursor reach)
+        // Soft halo for bright stars and stars within cursor reach
         if (s.tier === 2 || near) {
           const haloR = s.r * (s.tier === 2 ? 6 : 4) * (1 + t * 0.5);
           const halo = ctx!.createRadialGradient(
-            s.x,
-            s.y,
+            drawX,
+            drawY,
             0,
-            s.x,
-            s.y,
+            drawX,
+            drawY,
             haloR
           );
           const haloAlpha = (s.tier === 2 ? 0.18 : 0.08) * twinkle + t * 0.25;
@@ -157,26 +151,16 @@ export function ParticleField() {
           halo.addColorStop(1, `rgba(${rgb}, 0)`);
           ctx!.fillStyle = halo;
           ctx!.beginPath();
-          ctx!.arc(s.x, s.y, haloR, 0, Math.PI * 2);
+          ctx!.arc(drawX, drawY, haloR, 0, Math.PI * 2);
           ctx!.fill();
         }
 
-        // 2) Star body
+        // Star body
         const bodyAlpha = baseAlpha * twinkle + t * 0.4;
         ctx!.fillStyle = `rgba(${rgb}, ${Math.min(1, bodyAlpha)})`;
         ctx!.beginPath();
-        ctx!.arc(s.x, s.y, s.r * (1 + t * 0.6), 0, Math.PI * 2);
+        ctx!.arc(drawX, drawY, s.r * (1 + t * 0.6), 0, Math.PI * 2);
         ctx!.fill();
-
-        // 3) Constellation line to cursor
-        if (near) {
-          ctx!.strokeStyle = `rgba(${rgb}, ${t * 0.45})`;
-          ctx!.lineWidth = 1;
-          ctx!.beginPath();
-          ctx!.moveTo(s.x, s.y);
-          ctx!.lineTo(mx, my);
-          ctx!.stroke();
-        }
       }
 
       raf = requestAnimationFrame(frame);

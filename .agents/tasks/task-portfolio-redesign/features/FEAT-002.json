@@ -1,0 +1,27 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Update the design system foundation: color tokens, fonts, and tailwind config to match the new HTML design's purple/pink/cyan color scheme with Space Grotesk + Inter + JetBrains Mono fonts. Also update layout.tsx font imports.",
+  "status": "completed",
+  "steps": [
+    "Update app/globals.css CSS custom properties in :root to match the HTML design's oklch-based color tokens. The new palette uses: --bg (deep purple-black), --surface, --fg (near-white), --muted, --dim, --border, --accent (pink/magenta oklch(68% 0.24 325)), --accent-2 (violet oklch(62% 0.22 290)), --cyan (oklch(78% 0.14 220)), --glow (255 100 220). Convert oklch values to HSL approximations for use with Tailwind's hsl() pattern. New HSL approximations: --bg: 270 40% 6%, --bg-subtle: 270 35% 9%, --bg-elevated: 270 30% 13%, --fg: 280 20% 97%, --fg-muted: 280 10% 68%, --fg-subtle: 280 12% 50%, --accent: 325 85% 65%, --accent-2: 280 70% 58%, --accent-3: 210 80% 72% (cyan), --border: 270 20% 22%.",
+    "Update the font variables in globals.css: --font-sans should map to --font-space-grotesk (display headings), add --font-body for Inter (body text), --font-mono for JetBrains Mono.",
+    "Update app/layout.tsx to import Space_Grotesk, Inter, and JetBrains_Mono from next/font/google instead of Geist and Instrument_Serif. Set Space Grotesk as --font-space-grotesk variable, Inter as --font-inter variable, JetBrains Mono as --font-jetbrains variable. Apply all three variables to the body className.",
+    "Update tailwind.config.ts fontFamily to add: display (Space Grotesk), body (Inter), mono (JetBrains Mono). Keep the color token structure the same (using hsl(var(--xxx) / <alpha-value>)) but add accent-2 and cyan color entries.",
+    "Update the .accent-text utility in globals.css to use the new gradient: magenta (accent) -> violet (accent-2) -> cyan (accent-3).",
+    "Update body base styling in globals.css to use font-body (Inter) as default body font instead of font-sans.",
+    "Keep all existing utility classes (.glass, .glass-hover, .container-page, .section, .shine-border) but update their color references to use the new tokens.",
+    "Update the ::selection style to use the new --glow pink color."
+  ],
+  "acceptance_criteria": [
+    "globals.css has updated color tokens matching the purple/pink/cyan scheme from the HTML",
+    "layout.tsx imports Space Grotesk, Inter, and JetBrains Mono from next/font/google",
+    "tailwind.config.ts has updated font families and new accent-2/cyan color entries",
+    "The project builds successfully with npm run build"
+  ],
+  "verification": [
+    "Run `npm run build` in /projects/sandbox/Portfolio-2 and confirm it succeeds with no TypeScript or CSS errors"
+  ],
+  "blocked_reason": null,
+  "findings": "All three files updated successfully. Build passes cleanly. Color tokens updated to purple/pink/cyan HSL values. Fonts changed from Geist/Instrument_Serif to Space_Grotesk/Inter/JetBrains_Mono. Removed --font-display variable and the display font family from tailwind config. Added accent-2 and cyan color entries to tailwind config. The .text-display class now uses font-family: var(--font-sans) with font-weight: 600 instead of the old font-display italic approach."
+}

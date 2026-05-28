@@ -7,19 +7,33 @@ export function Experience() {
   return (
     <section id="experience" className="section relative">
       <div className="container-page">
-        <p className="font-mono text-xs uppercase tracking-[0.25em] text-fg-subtle">
-          04 — Experience
-        </p>
-        <h2 className="mt-3 text-balance text-2xl font-medium sm:text-3xl md:text-5xl">
-          Where I&apos;ve been{" "}
-          <span className="text-display accent-text">building</span>.
-        </h2>
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6 }}
+          className="font-mono text-sm text-fg-subtle"
+        >
+          // Experience
+        </motion.p>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-3 text-balance text-2xl font-medium sm:text-3xl md:text-5xl"
+        >
+          Professional <span className="text-display accent-text">Journey</span>
+        </motion.h2>
 
         <div className="relative mt-14">
+          {/* Timeline line */}
           <div
             aria-hidden
             className="absolute left-3 top-0 h-full w-px bg-border md:left-1/2"
           />
+
           <ul className="space-y-12">
             {experience.map((exp, i) => (
               <motion.li
@@ -30,39 +44,28 @@ export function Experience() {
                 transition={{ duration: 0.6, delay: i * 0.05 }}
                 className="relative grid gap-6 md:grid-cols-2"
               >
+                {/* Left side: date/period */}
                 <div className="md:pr-12 md:text-right">
+                  {/* Timeline dot */}
                   <span className="absolute left-3 top-1.5 grid h-3 w-3 -translate-x-1/2 place-items-center rounded-full bg-accent ring-4 ring-bg md:left-1/2" />
-                  <p className="font-mono text-xs uppercase tracking-wider text-fg-subtle md:pt-1">
+                  <p className="font-mono text-sm text-fg-subtle md:pt-1">
                     {exp.period}
                   </p>
-                  <p className="mt-1 text-fg-muted">{exp.location}</p>
                 </div>
 
+                {/* Right side: card */}
                 <div className="md:pl-12">
-                  <div className="rounded-3xl glass p-6 md:p-8">
-                    <h3 className="text-xl font-medium md:text-2xl">{exp.role}</h3>
+                  <div className="glass rounded-2xl p-6">
+                    <h3 className="text-xl font-sans font-medium">{exp.role}</h3>
                     <p className="mt-1 text-fg-muted">{exp.company}</p>
-                    <p className="mt-4 text-sm text-fg-muted md:text-base">
+                    <p className="mt-4 text-sm text-fg-muted">
                       {exp.summary}
                     </p>
-
-                    <ul className="mt-4 space-y-2">
-                      {exp.highlights.map((h) => (
-                        <li
-                          key={h}
-                          className="flex gap-3 text-sm text-fg-muted md:text-[15px]"
-                        >
-                          <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
-                          <span>{h}</span>
-                        </li>
-                      ))}
-                    </ul>
-
                     <div className="mt-5 flex flex-wrap gap-2">
                       {exp.tech.map((t) => (
                         <span
                           key={t}
-                          className="rounded-full border border-border/60 bg-bg-elevated/40 px-2.5 py-1 font-mono text-[11px] text-fg-subtle"
+                          className="rounded-full border border-border/60 px-2.5 py-1 font-mono text-[11px] text-fg-subtle"
                         >
                           {t}
                         </span>

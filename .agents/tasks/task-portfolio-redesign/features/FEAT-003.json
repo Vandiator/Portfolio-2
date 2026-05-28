@@ -1,0 +1,33 @@
+{
+  "id": "FEAT-003",
+  "type": "feat",
+  "description": "Redesign the Navbar, Hero section (keeping Typewriter), About section, Projects/Work section, Experience section, and add a Testimonials section - all matching the HTML design. Also update page.tsx composition and the background/starfield effects.",
+  "status": "in_progress",
+  "steps": [
+    "NAVBAR (components/Navbar.tsx): Redesign to match the HTML nav. Keep the logo-mark Saturn circle on the left with the name 'Vineet' as a span. The nav links should be styled individually (not in a glass pill) with hover color change to accent. On the right, add a 'Let's Talk' button with rounded-full border-accent style. Keep the mobile hamburger menu. Keep the scroll detection for background opacity change. Nav links should be: About, Projects, Skills, Experience, Testimonials, Contact.",
+    "HERO (components/sections/Hero.tsx): Redesign to match the HTML hero layout. LEFT side: a tagline 'Developer & Designer' in small mono caps, then the big headline 'Crafting Digital Experiences with Purpose & Precision' with 'Purpose & Precision' having the accent-text gradient. Below the headline, a paragraph describing Vineet. Below that, two CTA buttons: 'View Projects' (filled accent bg) and 'Get In Touch' (glass border). Below CTAs, add a 'Currently available for freelance' status indicator. RIGHT side: Keep the Avatar component (orbit animation) as-is. IMPORTANT: The Typewriter component must remain in the Avatar caption below the orbit (it's already there in Avatar.tsx - keep it). Use Framer Motion for entrance animations.",
+    "ABOUT (components/sections/About.tsx): Redesign to match the HTML about layout. Left side: a portrait placeholder div (rounded-2xl with gradient border, showing a centered icon or 'VV' initials). Right side: section label '// About Me' in mono, heading 'Passionate about creating meaningful digital experiences' with 'meaningful' as accent-text, then 2-3 paragraphs of bio text from profile.bio, followed by a stats row showing: '2+ Years Experience', '10+ Projects Completed', '5+ Happy Clients', '3+ Awards Won'.",
+    "WORK/PROJECTS (components/sections/Work.tsx): Redesign to match the HTML projects grid. Section header with '// Featured Projects' label and heading 'Selected Works' with 'Works' as accent-text. Display projects in a grid: the first (featured) project gets a large card spanning full width with a visual placeholder area (tall, with gradient bg), title, description, and tech tags. The remaining projects display in a 2-column grid with similar cards (shorter visual area). Each card has: a visual placeholder div (rounded with gradient-to-br from purple to pink, showing a code/terminal icon), project title, description text, and a row of tech tags as pills. Cards use the glass style with hover effect.",
+    "EXPERIENCE (components/sections/Experience.tsx): Redesign to match the HTML timeline. Section header with '// Experience' label and heading 'Professional Journey' with 'Journey' as accent-text. The timeline uses a vertical center line (on desktop). Each entry shows: on one side the period/date, on the other side a glass card with role title, company name, description, and tech tags. Timeline dots are accent colored on the center line. Use the existing experience data from content/experience.ts.",
+    "ADD TESTIMONIALS (create components/sections/Testimonials.tsx): New section matching the HTML design. Section header with '// Testimonials' label and heading 'What People Say' with 'Say' as accent-text. Display 2-3 testimonial cards in a grid. Each card is a glass card with: a large opening quote mark (accent colored), the testimonial text in italic, and below it the person's name and role. Use hardcoded testimonial data (since there's no content file for this). Example testimonials about working with Vineet.",
+    "PAGE COMPOSITION (app/page.tsx): Update section order to match HTML: Hero -> About -> Work -> Skills (KEEP) -> Experience -> Testimonials (NEW) -> Contact (KEEP). Remove Marquee import and Education import.",
+    "BACKGROUND (components/effects/AuroraBackground.tsx): The current AuroraBackground already uses the cosmos gradient-mesh pattern. Keep it as-is since globals.css was already updated with the correct radial gradients in FEAT-002. The orbs use the accent colors which will automatically update.",
+    "STARFIELD (components/effects/ParticleField.tsx): Update the star field to match the HTML design's canvas starfield. Changes: reduce star count to ~100, use white/slightly blue star color instead of warm white (rgb 200,200,255 range), remove the cursor constellation lines (the HTML version doesn't have them), add subtle parallax based on mouse position (stars shift slightly when mouse moves), increase the variety in star sizes (more tiny pinpricks, fewer large ones). Keep the drift and twinkle."
+  ],
+  "acceptance_criteria": [
+    "Navbar shows logo-mark + name, individual nav links, and a 'Let's Talk' CTA button",
+    "Hero section has the two-column layout with headline on left and orbit animation on right, Typewriter still visible in the Avatar caption",
+    "About section has portrait placeholder on left and bio/stats on right",
+    "Projects section shows a featured card + 2-col grid of remaining projects with visual placeholder areas",
+    "Experience section has a center-line timeline with glass cards",
+    "Testimonials section exists with 2-3 testimonial cards",
+    "page.tsx renders: Hero, About, Work, Skills, Experience, Testimonials, Contact (no Marquee, no Education)",
+    "ParticleField uses white/blue stars without constellation lines, with subtle mouse parallax",
+    "The project builds successfully with npm run build"
+  ],
+  "verification": [
+    "Run `npm run build` in /projects/sandbox/Portfolio-2 and confirm it succeeds with no errors"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}
