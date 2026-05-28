@@ -1,7 +1,30 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { experience } from "@/content/experience";
+
+const timeline = [
+  {
+    period: "2024 \u2014 PRESENT",
+    title: "Freelance Developer & Designer",
+    company: "Independent \u00B7 Remote",
+    description:
+      "Working with founders and small teams to ship marketing sites, product surfaces, and design systems. Focus on speed without sacrificing craft.",
+  },
+  {
+    period: "2023 \u2014 2024",
+    title: "Frontend Developer",
+    company: "Studio Project \u00B7 Contract",
+    description:
+      "Built custom web experiences for early-stage startups. Owned implementation from Figma handoff to deploy, with emphasis on motion and accessibility.",
+  },
+  {
+    period: "2022 \u2014 2023",
+    title: "UI Engineer (Intern)",
+    company: "Local Agency",
+    description:
+      "Cut my teeth on production codebases, design tokens, and the discipline of shipping. Learned that good defaults beat clever exceptions.",
+  },
+];
 
 export function Experience() {
   return (
@@ -12,9 +35,9 @@ export function Experience() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6 }}
-          className="font-mono text-sm text-fg-subtle"
+          className="font-mono text-sm uppercase tracking-wider text-fg-subtle"
         >
-          // Experience
+          04 — Trajectory
         </motion.p>
 
         <motion.h2
@@ -22,57 +45,47 @@ export function Experience() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-3 text-balance text-2xl font-medium sm:text-3xl md:text-5xl"
+          className="mt-4 text-balance text-2xl font-medium sm:text-3xl md:text-5xl"
         >
-          Professional <span className="text-display accent-text">Journey</span>
+          Where I&apos;ve <span className="accent-text">orbited.</span>
         </motion.h2>
 
-        <div className="relative mt-14">
-          {/* Timeline line */}
+        {/* LEFT-aligned timeline */}
+        <div className="relative mt-14 pl-8">
+          {/* Vertical line */}
           <div
             aria-hidden
-            className="absolute left-3 top-0 h-full w-px bg-border md:left-1/2"
+            className="absolute left-3 top-0 h-full w-px bg-border"
           />
 
-          <ul className="space-y-12">
-            {experience.map((exp, i) => (
+          <ul className="space-y-14">
+            {timeline.map((item, i) => (
               <motion.li
-                key={exp.company + exp.period}
+                key={item.period}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.6, delay: i * 0.05 }}
-                className="relative grid gap-6 md:grid-cols-2"
+                transition={{ duration: 0.6, delay: i * 0.08 }}
+                className="relative"
               >
-                {/* Left side: date/period */}
-                <div className="md:pr-12 md:text-right">
-                  {/* Timeline dot */}
-                  <span className="absolute left-3 top-1.5 grid h-3 w-3 -translate-x-1/2 place-items-center rounded-full bg-accent ring-4 ring-bg md:left-1/2" />
-                  <p className="font-mono text-sm text-fg-subtle md:pt-1">
-                    {exp.period}
-                  </p>
-                </div>
+                {/* Dot on the line */}
+                <span className="absolute -left-8 top-1.5 grid h-3 w-3 translate-x-[9px] place-items-center rounded-full bg-accent ring-4 ring-bg" />
 
-                {/* Right side: card */}
-                <div className="md:pl-12">
-                  <div className="glass rounded-2xl p-6">
-                    <h3 className="text-xl font-sans font-medium">{exp.role}</h3>
-                    <p className="mt-1 text-fg-muted">{exp.company}</p>
-                    <p className="mt-4 text-sm text-fg-muted">
-                      {exp.summary}
-                    </p>
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      {exp.tech.map((t) => (
-                        <span
-                          key={t}
-                          className="rounded-full border border-border/60 px-2.5 py-1 font-mono text-[11px] text-fg-subtle"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                {/* Date */}
+                <p className="font-mono text-sm text-accent">{item.period}</p>
+
+                {/* Title */}
+                <h3 className="mt-2 text-xl font-sans font-medium text-fg">
+                  {item.title}
+                </h3>
+
+                {/* Company */}
+                <p className="mt-1 text-sm text-fg-muted">{item.company}</p>
+
+                {/* Description */}
+                <p className="mt-3 text-base leading-relaxed text-fg-muted">
+                  {item.description}
+                </p>
               </motion.li>
             ))}
           </ul>

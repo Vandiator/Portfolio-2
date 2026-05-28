@@ -1,8 +1,45 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight, Code2, Github } from "lucide-react";
-import { projects } from "@/content/projects";
+
+const projects = [
+  {
+    num: "001",
+    title: "Project Aurora \u2014 Brand & Product Site",
+    description:
+      "A full brand identity and marketing site for an early-stage startup. Focus on motion, storytelling, and conversion.",
+    tag: "Featured",
+    tech: ["NEXT.JS", "FRAMER MOTION", "FIGMA", "SANITY"],
+    featured: true,
+  },
+  {
+    num: "002",
+    title: "Stellar Analytics",
+    description:
+      "Real-time analytics dashboard with interactive data visualizations and a dark-first design system.",
+    tag: "Web \u00B7 Dashboard",
+    tech: ["REACT", "D3", "TAILWIND"],
+    featured: false,
+  },
+  {
+    num: "003",
+    title: "Nebula \u2014 Meditation App",
+    description:
+      "A calming meditation experience with breath-synced animations and adaptive soundscapes.",
+    tag: "Mobile \u00B7 Concept",
+    tech: ["SWIFTUI", "FIGMA", "RIVE"],
+    featured: false,
+  },
+  {
+    num: "004",
+    title: "Voyage Magazine",
+    description:
+      "An editorial platform with rich typography, long-form reading modes, and scroll-driven animations.",
+    tag: "Web \u00B7 Editorial",
+    tech: ["ASTRO", "MDX", "GSAP"],
+    featured: false,
+  },
+];
 
 export function Work() {
   const featured = projects.filter((p) => p.featured);
@@ -16,9 +53,9 @@ export function Work() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6 }}
-          className="font-mono text-sm text-fg-subtle"
+          className="font-mono text-sm uppercase tracking-wider text-fg-subtle"
         >
-          // Featured Projects
+          02 — Selected work
         </motion.p>
 
         <motion.h2
@@ -26,27 +63,54 @@ export function Work() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-3 text-balance text-2xl font-medium sm:text-3xl md:text-5xl"
+          className="mt-4 text-balance text-2xl font-medium sm:text-3xl md:text-5xl"
         >
-          Selected <span className="text-display accent-text">Works</span>
+          Recent <span className="accent-text">trajectories.</span>
         </motion.h2>
 
-        <div className="mt-14 space-y-6">
-          {/* Featured projects - full width */}
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mt-4 max-w-2xl text-base text-fg-muted"
+        >
+          A handful of recent missions across product design, web development,
+          and creative coding. Each one taught me something new about shape,
+          pace, and restraint.
+        </motion.p>
+
+        <div className="mt-14 grid grid-cols-12 gap-6">
+          {/* Featured project - full width */}
           {featured.map((p, i) => (
             <motion.article
-              key={p.slug}
+              key={p.num}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="group overflow-hidden rounded-2xl glass glass-hover p-6"
+              className="col-span-12 group overflow-hidden rounded-2xl glass glass-hover p-6"
             >
-              <div className="h-64 rounded-xl bg-gradient-to-br from-accent/20 via-accent-2/10 to-bg-elevated flex items-center justify-center">
-                <Code2 size={48} className="text-accent/30" />
+              <div
+                className="relative rounded-xl bg-gradient-to-br from-accent/20 via-accent-2/10 to-bg-elevated flex items-center justify-center"
+                style={{ aspectRatio: "21/9" }}
+              >
+                {/* Decorative glyph */}
+                <div className="h-16 w-16 rounded-full border-2 border-accent/30" />
+                {/* Project number */}
+                <span className="absolute top-4 right-4 font-mono text-xs text-fg-subtle">
+                  // {p.num}
+                </span>
               </div>
-              <h3 className="mt-6 text-2xl font-sans font-semibold">{p.title}</h3>
-              <p className="mt-2 text-fg-muted">{p.summary}</p>
+              <div className="mt-5 flex items-center gap-3">
+                <span className="rounded-full bg-accent/15 px-3 py-1 font-mono text-[11px] uppercase text-accent">
+                  {p.tag}
+                </span>
+              </div>
+              <h3 className="mt-4 text-2xl font-sans font-semibold">
+                {p.title}
+              </h3>
+              <p className="mt-2 text-fg-muted">{p.description}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {p.tech.map((t) => (
                   <span
@@ -57,90 +121,49 @@ export function Work() {
                   </span>
                 ))}
               </div>
-              {(p.links?.github || p.links?.demo) && (
-                <div className="mt-4 flex items-center gap-4">
-                  {p.links.github && (
-                    <a
-                      href={p.links.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-sm text-fg-muted hover:text-fg transition-colors"
-                    >
-                      <Github size={14} />
-                      Code
-                    </a>
-                  )}
-                  {p.links.demo && (
-                    <a
-                      href={p.links.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-sm text-fg-muted hover:text-fg transition-colors"
-                    >
-                      <ArrowUpRight size={14} />
-                      Live
-                    </a>
-                  )}
-                </div>
-              )}
             </motion.article>
           ))}
 
-          {/* Remaining projects - 2 column grid */}
-          <div className="grid gap-6 md:grid-cols-2">
-            {rest.map((p, i) => (
-              <motion.article
-                key={p.slug}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="group overflow-hidden rounded-2xl glass glass-hover p-6"
+          {/* Remaining projects - 6 cols each */}
+          {rest.map((p, i) => (
+            <motion.article
+              key={p.num}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+              className="col-span-12 md:col-span-6 group overflow-hidden rounded-2xl glass glass-hover p-6"
+            >
+              <div
+                className="relative rounded-xl bg-gradient-to-br from-accent/20 via-accent-2/10 to-bg-elevated flex items-center justify-center"
+                style={{ aspectRatio: "16/10" }}
               >
-                <div className="h-40 rounded-xl bg-gradient-to-br from-accent/20 via-accent-2/10 to-bg-elevated flex items-center justify-center">
-                  <Code2 size={36} className="text-accent/30" />
-                </div>
-                <h3 className="mt-4 text-xl font-sans font-semibold">{p.title}</h3>
-                <p className="mt-2 text-sm text-fg-muted">{p.summary}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {p.tech.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-full border border-border/60 px-2.5 py-1 font-mono text-[11px] text-fg-subtle"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-                {(p.links?.github || p.links?.demo) && (
-                  <div className="mt-4 flex items-center gap-4">
-                    {p.links.github && (
-                      <a
-                        href={p.links.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-sm text-fg-muted hover:text-fg transition-colors"
-                      >
-                        <Github size={14} />
-                        Code
-                      </a>
-                    )}
-                    {p.links.demo && (
-                      <a
-                        href={p.links.demo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-sm text-fg-muted hover:text-fg transition-colors"
-                      >
-                        <ArrowUpRight size={14} />
-                        Live
-                      </a>
-                    )}
-                  </div>
-                )}
-              </motion.article>
-            ))}
-          </div>
+                <div className="h-12 w-12 rounded-full border-2 border-accent/30" />
+                <span className="absolute top-4 right-4 font-mono text-xs text-fg-subtle">
+                  // {p.num}
+                </span>
+              </div>
+              <div className="mt-4 flex items-center gap-3">
+                <span className="rounded-full bg-accent/15 px-3 py-1 font-mono text-[11px] uppercase text-accent">
+                  {p.tag}
+                </span>
+              </div>
+              <h3 className="mt-3 text-xl font-sans font-semibold">
+                {p.title}
+              </h3>
+              <p className="mt-2 text-sm text-fg-muted">{p.description}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {p.tech.map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-full border border-border/60 px-2.5 py-1 font-mono text-[11px] text-fg-subtle"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </motion.article>
+          ))}
         </div>
       </div>
     </section>

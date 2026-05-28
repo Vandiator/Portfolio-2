@@ -1,7 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { testimonials } from "@/content/testimonials";
+
+const quotes = [
+  {
+    text: "Vineet ships work that feels considered from the first frame. The kind of attention you usually have to fight for \u2014 he just brings it.",
+    name: "Aria Mehta",
+    role: "FOUNDER \u00B7 LUNAR LABS",
+  },
+  {
+    text: "Rare combination of strong taste and strong execution. He pushes back when it matters and ships clean code I\u2019m not afraid to inherit.",
+    name: "Marcus Chen",
+    role: "ENG. LEAD \u00B7 ORBIT INC",
+  },
+];
 
 export function Testimonials() {
   return (
@@ -12,9 +24,9 @@ export function Testimonials() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6 }}
-          className="font-mono text-sm text-fg-subtle"
+          className="font-mono text-sm uppercase tracking-wider text-fg-subtle"
         >
-          // Testimonials
+          05 — Signals from Earth
         </motion.p>
 
         <motion.h2
@@ -22,9 +34,11 @@ export function Testimonials() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-3 text-balance text-2xl font-medium sm:text-3xl md:text-5xl"
+          className="mt-4 text-balance text-2xl font-medium sm:text-3xl md:text-5xl"
         >
-          What People <span className="text-display accent-text">Say</span>
+          Kind words from
+          <br />
+          <span className="accent-text">collaborators.</span>
         </motion.h2>
 
         <motion.div
@@ -35,9 +49,9 @@ export function Testimonials() {
             hidden: {},
             show: { transition: { staggerChildren: 0.1 } },
           }}
-          className="mt-12 grid gap-6 md:grid-cols-3"
+          className="mt-12 grid gap-6 md:grid-cols-2"
         >
-          {testimonials.map((t, i) => (
+          {quotes.map((q, i) => (
             <motion.div
               key={i}
               variants={{
@@ -45,15 +59,28 @@ export function Testimonials() {
                 show: { opacity: 1, y: 0 },
               }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="glass rounded-2xl p-6"
+              className="glass rounded-2xl p-8"
             >
-              <p className="text-4xl text-accent/40 mb-4">&ldquo;</p>
-              <p className="text-sm italic leading-relaxed text-fg-muted">
-                {t.quote}
+              {/* Large quotation mark */}
+              <p className="text-5xl leading-none text-accent/50">
+                &ldquo;
               </p>
-              <div className="mt-6">
-                <p className="text-sm font-medium text-fg">{t.name}</p>
-                <p className="text-xs text-fg-subtle">{t.role}</p>
+
+              {/* Quote text */}
+              <p className="mt-4 text-base italic leading-relaxed text-fg-muted">
+                {q.text}
+              </p>
+
+              {/* Author */}
+              <div className="mt-8 flex items-center gap-3">
+                {/* Avatar circle */}
+                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-accent to-accent-2" />
+                <div>
+                  <p className="text-sm font-medium text-fg">{q.name}</p>
+                  <p className="font-mono text-xs uppercase text-fg-subtle">
+                    {q.role}
+                  </p>
+                </div>
               </div>
             </motion.div>
           ))}

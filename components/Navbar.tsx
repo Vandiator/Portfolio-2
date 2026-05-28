@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { profile } from "@/content/profile";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -11,7 +10,6 @@ const links = [
   { href: "#work", label: "Projects" },
   { href: "#skills", label: "Skills" },
   { href: "#experience", label: "Experience" },
-  { href: "#testimonials", label: "Testimonials" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -33,31 +31,31 @@ export function Navbar() {
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 1.4 }}
       className={cn(
         "fixed inset-x-0 top-0 z-40 transition-all duration-300",
-        "border-b backdrop-blur-md",
         scrolled
-          ? "border-border/60 bg-bg/75 backdrop-blur-xl"
-          : "border-transparent bg-bg/30"
+          ? "border-b border-border/60 bg-bg/75 backdrop-blur-xl"
+          : "border-b border-transparent bg-transparent"
       )}
     >
       <div className="container-page flex h-16 items-center justify-between">
-        {/* Left: logo + name */}
+        {/* Left: logo-mark + name */}
         <a
           href="#top"
           className="group inline-flex items-center gap-2"
-          data-cursor-text="home"
         >
           <span className="logo-mark transition-transform group-hover:rotate-[20deg]" />
-          <span className="text-sm font-medium">{profile.shortName}</span>
+          <span className="text-sm font-medium text-fg">
+            Vineet<span className="text-accent">.</span>
+          </span>
         </a>
 
-        {/* Center: nav links (not in a glass pill) */}
+        {/* Center: nav links */}
         <nav aria-label="Primary" className="hidden md:block">
           <ul className="flex items-center gap-6">
             {links.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className="text-sm text-fg-muted transition-colors hover:text-fg"
+                  className="text-sm text-fg-muted transition-colors hover:text-white"
                 >
                   {link.label}
                 </a>
@@ -66,13 +64,18 @@ export function Navbar() {
           </ul>
         </nav>
 
-        {/* Right: Let's Talk button */}
+        {/* Right: Let's talk CTA */}
         <div className="hidden items-center md:flex">
           <a
             href="#contact"
-            className="rounded-full border border-accent px-4 py-2 text-sm font-medium text-accent transition-colors hover:bg-accent hover:text-accent-fg"
+            className="rounded-full px-5 py-2 text-sm font-medium text-white transition-transform hover:scale-105"
+            style={{
+              background:
+                "linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent-2)))",
+              boxShadow: "0 0 20px rgba(var(--glow), 0.3)",
+            }}
           >
-            Let&apos;s Talk
+            Let&apos;s talk &rarr;
           </a>
         </div>
 
@@ -81,7 +84,7 @@ export function Navbar() {
           aria-label="Toggle menu"
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen((v) => !v)}
-          className="grid h-10 w-10 place-items-center rounded-full border border-border/60 md:hidden"
+          className="grid h-10 w-10 place-items-center rounded-full border border-border md:hidden"
         >
           {mobileOpen ? <X size={18} /> : <Menu size={18} />}
         </button>
@@ -112,9 +115,13 @@ export function Navbar() {
                   <a
                     href="#contact"
                     onClick={() => setMobileOpen(false)}
-                    className="block rounded-lg border border-accent px-3 py-3 text-center text-base font-medium text-accent"
+                    className="block rounded-lg px-3 py-3 text-center text-base font-medium text-white"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent-2)))",
+                    }}
                   >
-                    Let&apos;s Talk
+                    Let&apos;s talk &rarr;
                   </a>
                 </li>
               </ul>

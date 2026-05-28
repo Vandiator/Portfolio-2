@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { profile } from "@/content/profile";
-import { Avatar } from "@/components/Avatar";
+import { Typewriter } from "@/components/effects/Typewriter";
 
 export function Hero() {
   const heroDelay = 1.6;
@@ -16,14 +15,21 @@ export function Hero() {
         <div className="grid items-center gap-10 md:grid-cols-2 md:gap-12">
           {/* LEFT - text content */}
           <div>
-            <motion.p
+            {/* Eyebrow pill */}
+            <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: heroDelay }}
-              className="font-mono text-xs uppercase tracking-widest text-fg-subtle"
+              className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-1.5"
             >
-              Developer &amp; Designer
-            </motion.p>
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent/60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+              </span>
+              <span className="font-mono text-xs text-fg-muted">
+                Available for new orbits &middot; 2025
+              </span>
+            </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 24 }}
@@ -33,24 +39,51 @@ export function Hero() {
                 delay: heroDelay + 0.1,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="mt-6 text-balance text-[2.5rem] font-medium leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
+              className="mt-6"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: "clamp(48px, 7vw, 92px)",
+                fontWeight: 500,
+                lineHeight: 1.02,
+                letterSpacing: "-0.03em",
+              }}
             >
-              Crafting Digital
+              Building
               <br />
-              Experiences with
+              digital <span className="accent-text">universes</span>
               <br />
-              <span className="text-display accent-text">Purpose &amp; Precision</span>
+              one pixel at a time.
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: heroDelay + 0.3 }}
-              className="mt-6 max-w-xl text-balance text-base text-fg-muted md:text-lg"
+              className="mt-6 max-w-xl text-balance text-base leading-relaxed text-fg-muted md:text-lg"
             >
-              {profile.bio[0]}
+              I&apos;m Vineet Vishwakarma — a developer and designer crafting
+              interfaces that feel as expansive as the night sky. From quiet
+              portfolios to ambitious product surfaces.
             </motion.p>
 
+            {/* Typewriter */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: heroDelay + 0.4 }}
+              className="mt-4 font-mono text-sm text-fg-subtle"
+            >
+              <Typewriter
+                words={[
+                  "Full-Stack Developer",
+                  "UI/UX Designer",
+                  "Creative Coder",
+                  "Problem Solver",
+                ]}
+              />
+            </motion.div>
+
+            {/* CTA buttons */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -59,35 +92,24 @@ export function Hero() {
             >
               <a
                 href="#work"
-                className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-medium text-accent-fg transition-transform hover:scale-105"
+                className="inline-flex items-center gap-2 rounded-full px-6 py-3 font-medium text-white transition-transform hover:scale-105"
+                style={{
+                  background:
+                    "linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent-2)))",
+                }}
               >
-                View Projects
+                Explore work &rarr;
               </a>
               <a
                 href="#contact"
                 className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 font-medium text-fg transition-colors hover:border-accent"
               >
-                Get In Touch
+                Start a project
               </a>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: heroDelay + 0.7 }}
-              className="mt-6 flex items-center gap-2"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent/60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-              </span>
-              <span className="font-mono text-xs text-fg-subtle">
-                Currently available for freelance
-              </span>
             </motion.div>
           </div>
 
-          {/* RIGHT - Avatar with orbit animation */}
+          {/* RIGHT - Orbit animation */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -96,8 +118,14 @@ export function Hero() {
               delay: heroDelay + 0.2,
               ease: [0.16, 1, 0.3, 1],
             }}
+            className="flex items-center justify-center"
           >
-            <Avatar />
+            <div className="orbit-stage relative aspect-square w-full max-w-[420px]">
+              <div className="orbit-ring r1" />
+              <div className="orbit-ring r2" />
+              <div className="orbit-ring r3" />
+              <div className="planet" />
+            </div>
           </motion.div>
         </div>
       </div>
