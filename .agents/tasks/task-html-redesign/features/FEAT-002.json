@@ -2,7 +2,7 @@
   "id": "FEAT-002",
   "type": "refactor",
   "description": "Rewrite all modifiable components (Navbar, Hero, About, Work, Experience, Testimonials, AuroraBackground, ParticleField) and layout/page to use the exact HTML structure and class names from the reference file. Use the content data from content/ files.",
-  "status": "in_progress",
+  "status": "completed",
   "steps": [
     "1. Rewrite app/layout.tsx: Keep fonts (Space Grotesk, Inter, JetBrains Mono), metadata, viewport. Remove Splash and CustomCursor imports/usage. Keep AuroraBackground and ParticleField. Remove Navbar and Footer from layout (they'll be in page.tsx or kept in layout if needed by Skills/Contact/Footer). Actually keep Navbar in layout but it will be rewritten. Keep Footer in layout. The body should use font variables. Add the 'wrap' class div structure from the HTML reference.",
     "2. Rewrite components/effects/AuroraBackground.tsx: Render a <div className='cosmos' /> that is fixed fullscreen background matching the HTML .cosmos class (fixed inset-0 with radial gradients defined in CSS).",
@@ -28,5 +28,5 @@
   ],
   "verification": ["npx next build"],
   "blocked_reason": null,
-  "findings": ""
+  "findings": "Build passes cleanly. All components rewritten to use HTML reference class names. Removed Splash and CustomCursor from layout. Added ScrollReveal component with IntersectionObserver. ParticleField z-index fixed to -1 (between cosmos at -2 and wrap at 1). Skills, Contact, Footer, Typewriter unchanged as required."
 }
