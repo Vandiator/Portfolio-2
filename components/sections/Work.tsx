@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code2 } from "lucide-react";
+import { ArrowUpRight, Code2, Github } from "lucide-react";
 import { projects } from "@/content/projects";
 
 export function Work() {
@@ -57,6 +57,32 @@ export function Work() {
                   </span>
                 ))}
               </div>
+              {(p.links?.github || p.links?.demo) && (
+                <div className="mt-4 flex items-center gap-4">
+                  {p.links.github && (
+                    <a
+                      href={p.links.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 text-sm text-fg-muted hover:text-fg transition-colors"
+                    >
+                      <Github size={14} />
+                      Code
+                    </a>
+                  )}
+                  {p.links.demo && (
+                    <a
+                      href={p.links.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 text-sm text-fg-muted hover:text-fg transition-colors"
+                    >
+                      <ArrowUpRight size={14} />
+                      Live
+                    </a>
+                  )}
+                </div>
+              )}
             </motion.article>
           ))}
 
@@ -86,6 +112,32 @@ export function Work() {
                     </span>
                   ))}
                 </div>
+                {(p.links?.github || p.links?.demo) && (
+                  <div className="mt-4 flex items-center gap-4">
+                    {p.links.github && (
+                      <a
+                        href={p.links.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 text-sm text-fg-muted hover:text-fg transition-colors"
+                      >
+                        <Github size={14} />
+                        Code
+                      </a>
+                    )}
+                    {p.links.demo && (
+                      <a
+                        href={p.links.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 text-sm text-fg-muted hover:text-fg transition-colors"
+                      >
+                        <ArrowUpRight size={14} />
+                        Live
+                      </a>
+                    )}
+                  </div>
+                )}
               </motion.article>
             ))}
           </div>
