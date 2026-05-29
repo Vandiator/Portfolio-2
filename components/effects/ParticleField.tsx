@@ -3,16 +3,17 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Star field matching the HTML reference design.
+ * Star field matching the HTML reference design EXACTLY.
  *
- * Behaviour:
- *   - 220 stars with static positions (no drift/velocity)
- *   - Scroll-based vertical parallax (stars shift based on scrollY)
- *   - Mouse-based parallax (subtle horizontal/vertical shift)
- *   - Each star drawn with a radial gradient glow + solid core
- *   - Warm pink-white color: rgba(255, 230, 255, ...)
- *   - Stars wrap vertically based on scroll position
- *   - Honors prefers-reduced-motion (static, no parallax)
+ * - 220 stars with 3 layers (l = 0, 1, 2) and sizes 0.4, 0.8, 1.2 * dpr
+ * - Twinkle via sin wave (phase t, speed s 0.001-0.003)
+ * - Mouse parallax: mx*(layer+1)*6*dpr for X, my*(layer+1)*4*dpr for Y
+ * - Scroll parallax: -scrollY*0.05*(layer+1)*dpr for X, -scrollY*0.15*(layer+1)*dpr for Y
+ * - Y wraps: ((py%h)+h)%h
+ * - Glow: center rgba(255,230,255,a*tw), mid rgba(220,180,255,a*tw*0.4), edge transparent
+ * - Core: rgba(255,255,255,a*tw)
+ * - Canvas sized at innerWidth*dpr x innerHeight*dpr
+ * - Stars regenerated on every resize
  */
 export function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -23,132 +24,92 @@ export function ParticleField() {
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
     type Star = {
       x: number;
       y: number;
       r: number;
-      alpha: number;
-      parallaxFactor: number;
+      a: number;
+      t: number;
+      s: number;
+      l: number;
     };
 
-    let W = 0;
-    let H = 0;
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const stars: Star[] = [];
-    const COUNT = 220;
+    let w = 0;
+    let h = 0;
+    let stars: Star[] = [];
+    let mx = 0;
+    let my = 0;
+    let sy = 0;
 
-    let scrollY = 0;
-    let mx = 0.5;
-    let my = 0.5;
-
-    function spawn() {
-      stars.length = 0;
-      for (let i = 0; i < COUNT; i++) {
-        const t = Math.random();
-        const r =
-          t < 0.65
-            ? 0.3 + Math.random() * 0.5
-            : t < 0.9
-              ? 0.7 + Math.random() * 0.6
-              : 1.2 + Math.random() * 0.8;
-        const alpha = t < 0.65 ? 0.3 + Math.random() * 0.3 : 0.5 + Math.random() * 0.5;
-
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      w = canvas!.width = window.innerWidth * dpr;
+      h = canvas!.height = window.innerHeight * dpr;
+      canvas!.style.width = window.innerWidth + "px";
+      canvas!.style.height = window.innerHeight + "px";
+      stars = [];
+      for (let i = 0; i < 220; i++) {
+        const l = Math.floor(Math.random() * 3);
         stars.push({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          r,
-          alpha,
-          parallaxFactor: 0.2 + Math.random() * 0.8,
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: (l === 0 ? 0.4 : l === 1 ? 0.8 : 1.2) * dpr,
+          a: 0.3 + Math.random() * 0.7,
+          t: Math.random() * Math.PI * 2,
+          s: 0.001 + Math.random() * 0.003,
+          l,
         });
       }
     }
 
-    function resize() {
-      W = window.innerWidth;
-      H = window.innerHeight;
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas!.width = W * dpr;
-      canvas!.height = H * dpr;
-      canvas!.style.width = `${W}px`;
-      canvas!.style.height = `${H}px`;
-      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
-      if (stars.length === 0) spawn();
+    function onMouseMove(e: MouseEvent) {
+      mx = (e.clientX / window.innerWidth - 0.5) * 2;
+      my = (e.clientY / window.innerHeight - 0.5) * 2;
     }
-    resize();
 
-    const onScroll = () => {
-      scrollY = window.scrollY;
-    };
-    const onMove = (e: MouseEvent) => {
-      mx = e.clientX / W;
-      my = e.clientY / H;
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("mousemove", onMove, { passive: true });
-    window.addEventListener("resize", resize);
-
-    const rgb = "255, 230, 255";
+    function onScroll() {
+      sy = window.scrollY;
+    }
 
     let raf = 0;
 
-    function frame() {
-      ctx!.clearRect(0, 0, W, H);
-
-      // Mouse parallax offset
-      const mpx = reduceMotion ? 0 : (mx - 0.5) * 30;
-      const mpy = reduceMotion ? 0 : (my - 0.5) * 20;
-
-      // Scroll parallax
-      const scrollOffset = reduceMotion ? 0 : scrollY;
-
+    function loop() {
+      const dpr = window.devicePixelRatio || 1;
+      ctx!.clearRect(0, 0, w, h);
       for (const s of stars) {
-        // Calculate draw position with scroll wrap and parallax
-        const sy = scrollOffset * s.parallaxFactor * 0.15;
-        let drawY = ((s.y - sy) % H + H) % H;
-        let drawX = s.x + mpx * s.parallaxFactor;
-
-        // Wrap X
-        if (drawX < 0) drawX += W;
-        if (drawX > W) drawX -= W;
-
-        // Draw glow
-        const glowR = s.r * 5;
-        const glow = ctx!.createRadialGradient(
-          drawX,
-          drawY,
-          0,
-          drawX,
-          drawY,
-          glowR
-        );
-        glow.addColorStop(0, `rgba(${rgb}, ${s.alpha * 0.4})`);
-        glow.addColorStop(1, `rgba(${rgb}, 0)`);
-        ctx!.fillStyle = glow;
+        s.t += s.s;
+        const tw = 0.5 + Math.sin(s.t) * 0.5;
+        const px =
+          s.x + mx * (s.l + 1) * 6 * dpr - sy * 0.05 * (s.l + 1) * dpr;
+        const py =
+          s.y + my * (s.l + 1) * 4 * dpr - sy * 0.15 * (s.l + 1) * dpr;
+        const yy = ((py % h) + h) % h;
+        const g = ctx!.createRadialGradient(px, yy, 0, px, yy, s.r * 3);
+        g.addColorStop(0, `rgba(255,230,255,${s.a * tw})`);
+        g.addColorStop(0.5, `rgba(220,180,255,${s.a * tw * 0.4})`);
+        g.addColorStop(1, "rgba(220,180,255,0)");
+        ctx!.fillStyle = g;
         ctx!.beginPath();
-        ctx!.arc(drawX, drawY, glowR, 0, Math.PI * 2);
+        ctx!.arc(px, yy, s.r * 3, 0, Math.PI * 2);
         ctx!.fill();
-
-        // Draw solid core
-        ctx!.fillStyle = `rgba(${rgb}, ${s.alpha})`;
+        ctx!.fillStyle = `rgba(255,255,255,${s.a * tw})`;
         ctx!.beginPath();
-        ctx!.arc(drawX, drawY, s.r, 0, Math.PI * 2);
+        ctx!.arc(px, yy, s.r, 0, Math.PI * 2);
         ctx!.fill();
       }
-
-      raf = requestAnimationFrame(frame);
+      raf = requestAnimationFrame(loop);
     }
 
-    raf = requestAnimationFrame(frame);
+    resize();
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", resize);
+    raf = requestAnimationFrame(loop);
 
     return () => {
       cancelAnimationFrame(raf);
+      window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("mousemove", onMove);
       window.removeEventListener("resize", resize);
     };
   }, []);
