@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { Big_Shoulders_Inline, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { profile } from "@/content/profile";
 import { AuroraBackground } from "@/components/effects/AuroraBackground";
@@ -7,10 +7,10 @@ import { ParticleField } from "@/components/effects/ParticleField";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const bigShoulders = Big_Shoulders_Inline({
+  variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -70,7 +70,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+      <body className={`${bigShoulders.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
         <AuroraBackground />
         <ParticleField />
         <Navbar />

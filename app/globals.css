@@ -11,7 +11,7 @@
   --border:oklch(28% 0.04 290 / 0.6);--accent:oklch(68% 0.24 325);
   --accent-2:oklch(62% 0.22 290);--cyan:oklch(78% 0.14 220);
   --glow:255 100 220;
-  --fd: var(--font-space-grotesk, 'Space Grotesk'), system-ui, sans-serif;
+  --fd: var(--font-display, 'Big Shoulders Inline'), system-ui, sans-serif;
   --fb: var(--font-inter, 'Inter'), system-ui, sans-serif;
   --fm: var(--font-jetbrains, 'JetBrains Mono'), ui-monospace, monospace;
 
